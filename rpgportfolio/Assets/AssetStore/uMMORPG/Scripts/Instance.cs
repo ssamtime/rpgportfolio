@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using Mirror;
 
 // requires NavMeshSurface so that we can duplicate and move it at runtime.
-[RequireComponent(typeof(NavMeshSurface))]
+//[RequireComponent(typeof(NavMeshSurface))]
 public class Instance : MonoBehaviour
 {
     [Header("Instance Definition")]
