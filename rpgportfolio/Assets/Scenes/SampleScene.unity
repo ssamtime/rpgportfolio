@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -414,6 +414,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1888164675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1028458618 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+  m_PrefabInstance: {fileID: 1085566584}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1085566584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -466,19 +471,81 @@ PrefabInstance:
       propertyPath: m_Name
       value: Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: b5f71c859f9f9bf41badda8a4650082c, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 52dc8601ee9283f42baa8b73b8779bfd, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1764702687}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1085566587}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1085566588}
   m_SourcePrefab: {fileID: 100100000, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
 --- !u!4 &1085566585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 13165086f18c18e41b560b0767e9c282, type: 3}
   m_PrefabInstance: {fileID: 1085566584}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1085566587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028458618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b15721e1a993d244a948498503185f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  runSpeed: 8
+  finalSpeed: 0
+  toggleCameraRotation: 0
+  run: 0
+  smoothness: 10
+--- !u!143 &1085566588
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028458618}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1386346148
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectTofollow: {fileID: 1764702687}
   followspeed: 10
-  sensitivity: 100
+  sensitivity: 500
   clampAngle: 70
   realCamera: {fileID: 963194228}
   dirNormalized: {x: 0, y: 0, z: 0}
