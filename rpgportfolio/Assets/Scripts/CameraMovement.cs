@@ -18,6 +18,7 @@ public class CameraMovement : MonoBehaviour
     public float finalDistance;
     public float smoothness = 10f;
 
+    private Vector3 cameraPos = new Vector3(0, 3, -3);
 
     void Start()
     {
@@ -44,8 +45,9 @@ public class CameraMovement : MonoBehaviour
     }
     private void LateUpdate()
     {
-        transform.position = Vector3.MoveTowards(transform.position,
-            objectTofollow.position, followspeed * Time.deltaTime);
+        //transform.position = Vector3.MoveTowards(transform.position,
+        //objectTofollow.position, followspeed * Time.deltaTime);
+        transform.position = objectTofollow.position;
         finalDir = transform.TransformPoint(dirNormalized * maxDistance);
 
         RaycastHit hit;

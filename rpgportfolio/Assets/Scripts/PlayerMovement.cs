@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     Animator _animator;
     Camera _camera;
-    CharacterController _controller;
+    Rigidbody _rigidbody;
 
     public float speed;
     public float runSpeed;
@@ -22,14 +22,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        _rigidbody=GetComponent<Rigidbody>();
         _animator = this.GetComponent<Animator>();
         _camera = Camera.main;
-        _controller = this.GetComponent<CharacterController>();
 
         speed = 5f;
         runSpeed = 8f;
         jumpSpeed = 40f;
         gravity = 10f;
+
+        //_rigidbody.velocity = Vector3.zero;
     }
 
 
@@ -52,8 +54,12 @@ public class PlayerMovement : MonoBehaviour
         {
             run = false;
         }
-
+               
         
+    }
+
+    private void FixedUpdate()
+    {
         InputMovement();
     }
     private void LateUpdate()
@@ -97,30 +103,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // 캐릭터에 중력 적용
-        //Vector3 downDirection = Vector3.down * gravity;
-        //_controller.Move(downDirection * Time.deltaTime);
-
-        moveDirection.y -= gravity * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            moveDirection.y = jumpSpeed;
+            //_rigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
 
-        _controller.Move(moveDirection.normalized * finalSpeed * Time.deltaTime); // 이동 적용
+        _rigidbody.MovePosition(_rigidbody.position + moveDirection.normalized * speed * Time.deltaTime);
 
-        
-
-
-        //// 캐릭터가 착지했을때
-        //if (_controller.collisionFlags == CollisionFlags.Below)
-        //{
-        //    Debug.Log("착지");            
-        //}
-        //else
-        //{            
-        //}
 
         // 속도에 따라 애니메이션 블렌드
         float percent = ((run) ? 1 : 0.5f) * moveDirection.magnitude;
