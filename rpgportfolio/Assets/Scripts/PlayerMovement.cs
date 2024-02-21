@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,9 +9,11 @@ public class PlayerMovement : MonoBehaviour
     Camera _camera;
     CharacterController _controller;
 
-    public float speed = 5f;
-    public float runSpeed = 8f;
+    public float speed;
+    public float runSpeed;
+    public float jumpSpeed;
     public float finalSpeed;
+    public float gravity;    
 
     public bool toggleCameraRotation;
     public bool run;
@@ -22,6 +25,11 @@ public class PlayerMovement : MonoBehaviour
         _animator = this.GetComponent<Animator>();
         _camera = Camera.main;
         _controller = this.GetComponent<CharacterController>();
+
+        speed = 5f;
+        runSpeed = 8f;
+        jumpSpeed = 40f;
+        gravity = 10f;
     }
 
 
@@ -45,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
             run = false;
         }
 
+        
         InputMovement();
     }
     private void LateUpdate()
@@ -63,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     void InputMovement()
     {
-        finalSpeed = (run) ? runSpeed : speed;  // shift키를 누르면 run이 true일 때는 runSpeed, false일 때는 speed
+        finalSpeed = (run) ? runSpeed : speed;  // run이 true일 때는 runSpeed, false일 때는 speed
 
         Vector3 forward = _camera.transform.forward; // 카메라의 전방 벡터를 플레이어의 forward로 사용
         forward.y = 0f; // y 방향은 회전할 필요가 없으므로 0으로 설정
@@ -76,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDirection = forward * verticalInput + right * horizontalInput;
 
-        if (toggleCameraRotation == false)  // alt 누르면 카메라 회전되게
+        if (toggleCameraRotation == false)  // alt 안누르면 플레이어 회전
         {
             // 입력된 방향이 0이 아닌 경우에만 회전 실행
             if (moveDirection != Vector3.zero)
@@ -88,9 +97,32 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        // 캐릭터에 중력 적용
+        //Vector3 downDirection = Vector3.down * gravity;
+        //_controller.Move(downDirection * Time.deltaTime);
+
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            moveDirection.y = jumpSpeed;
+        }
+
         _controller.Move(moveDirection.normalized * finalSpeed * Time.deltaTime); // 이동 적용
 
-        // 애니메이션 속도 설정
+        
+
+
+        //// 캐릭터가 착지했을때
+        //if (_controller.collisionFlags == CollisionFlags.Below)
+        //{
+        //    Debug.Log("착지");            
+        //}
+        //else
+        //{            
+        //}
+
+        // 속도에 따라 애니메이션 블렌드
         float percent = ((run) ? 1 : 0.5f) * moveDirection.magnitude;
         _animator.SetFloat("Blend", percent, 0.1f, Time.deltaTime);
     }
