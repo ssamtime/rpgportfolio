@@ -15,6 +15,9 @@ public class PlayerMove : MonoBehaviour
     public float rotSpeed;
     public float smoothness = 10f;
 
+    public float punchRange = 2f;
+    public int punchDamage = 10;
+
     public bool run;
     private bool isGround = false;
 
@@ -42,6 +45,12 @@ public class PlayerMove : MonoBehaviour
             _animator.SetTrigger("Jump");
         }
 
+        if(Input.GetMouseButtonDown(0)) 
+        {
+            _animator.SetTrigger("Punch");
+            PunchDamageEvent();
+        }
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             run = true;
@@ -61,12 +70,10 @@ public class PlayerMove : MonoBehaviour
         cameraForward.y = 0f; // y 방향은 회전할 필요가 없으므로 0으로 설정
         cameraForward.Normalize(); // 벡터를 정규화하여 길이를 1로 만듦
 
-        Vector3 right = Quaternion.Euler(new Vector3(0, 90, 0)) * cameraForward; // 전방 벡터를 기준으로 오른쪽 벡터 계산
-
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-
-        Vector3 moveDirection = cameraForward * verticalInput + right * horizontalInput;
+        Vector3 rightVec = Quaternion.Euler(new Vector3(0, 90, 0)) * cameraForward; // 전방 벡터를 기준으로 오른쪽 벡터
+        Vector3 moveDirection = cameraForward * verticalInput + rightVec * horizontalInput;
 
         if (moveDirection != Vector3.zero)
         {
@@ -91,7 +98,7 @@ public class PlayerMove : MonoBehaviour
 
         // 발밑 0.2위에서 밑으로 0.25거리만큼 안에 Ground 레이어마스크 있는지
         if (Physics.Raycast(transform.position + (Vector3.up *0.2f),
-            Vector3.down,out hit,0.25f,layer))
+            Vector3.down,out hit,0.21f,layer))
         {
             isGround = true;
         }
@@ -107,5 +114,20 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 jumpPower = Vector3.up * jumpHeight;
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+    }
+
+    // 애니메이션 이벤트
+    void PunchDamageEvent()
+    {
+        // 적 탐지
+        RaycastHit hit2;
+        if (Physics.Raycast(transform.position+ (Vector3.forward * 0.26f), transform.forward, out hit2, punchRange))
+        {
+            OrcManager enemy = hit2.collider.GetComponent<OrcManager>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(punchDamage); // 적에게 피해 입히기
+            }
+        }
     }
 }
