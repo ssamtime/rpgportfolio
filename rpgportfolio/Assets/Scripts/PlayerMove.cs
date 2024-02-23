@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
+using UnityEngine.InputSystem.HID;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -15,7 +19,7 @@ public class PlayerMove : MonoBehaviour
     public float rotSpeed;
     public float smoothness = 10f;
 
-    public float punchRange = 2f;
+    public float punchRange;
     public int punchDamage = 10;
 
     public bool run;
@@ -34,6 +38,8 @@ public class PlayerMove : MonoBehaviour
         runSpeed = 8f;
         jumpHeight = 5;
         rotSpeed = 20f;
+
+        punchRange = 0.5f;
     }
 
     void Update()
@@ -48,7 +54,8 @@ public class PlayerMove : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) 
         {
             _animator.SetTrigger("Punch");
-            PunchDamageEvent();
+
+            //PunchDamageEvent(); // 이거 애니메이션 실행중에 실행되도록
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -117,15 +124,17 @@ public class PlayerMove : MonoBehaviour
     }
 
     // 애니메이션 이벤트
-    void PunchDamageEvent()
+    public void PunchDamageEvent()
     {
         // 적 탐지
-        RaycastHit hit2;
-        if (Physics.Raycast(transform.position+ (Vector3.forward * 0.26f), transform.forward, out hit2, punchRange))
+        RaycastHit hit2;              
+        // 플레이어 주먹위치에서 레이 발사
+        if (Physics.Raycast(transform.position+ (transform.forward * 0.2f)+new Vector3(0, 1.5f, 0), transform.forward, out hit2, punchRange))
         {
             OrcManager enemy = hit2.collider.GetComponent<OrcManager>();
             if (enemy != null)
             {
+                transform.LookAt(hit2.transform);
                 enemy.TakeDamage(punchDamage); // 적에게 피해 입히기
             }
         }
