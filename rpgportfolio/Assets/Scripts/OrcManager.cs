@@ -11,7 +11,7 @@ public class OrcManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        orcHp = 100;
+        orcHp = 30;
         orcAnimator = GetComponent<Animator>();
     }
 

@@ -55,7 +55,6 @@ public class PlayerMove : MonoBehaviour
         {
             _animator.SetTrigger("Punch");
 
-            //PunchDamageEvent(); // 이거 애니메이션 실행중에 실행되도록
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -123,20 +122,4 @@ public class PlayerMove : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
     }
 
-    // 애니메이션 이벤트
-    public void PunchDamageEvent()
-    {
-        // 적 탐지
-        RaycastHit hit2;              
-        // 플레이어 주먹위치에서 레이 발사
-        if (Physics.Raycast(transform.position+ (transform.forward * 0.2f)+new Vector3(0, 1.5f, 0), transform.forward, out hit2, punchRange))
-        {
-            OrcManager enemy = hit2.collider.GetComponent<OrcManager>();
-            if (enemy != null)
-            {
-                transform.LookAt(hit2.transform);
-                enemy.TakeDamage(punchDamage); // 적에게 피해 입히기
-            }
-        }
-    }
 }

@@ -64,10 +64,10 @@ ModelImporter:
       events:
       - time: 0.4402596
         functionName: PunchDamageEvent
-        data: 
-        objectReferenceParameter: {fileID: 4537066446673117863, guid: 990426a872c796743afdfa0c7b104bc4, type: 3}
-        floatParameter: 0
-        intParameter: 0
+        data: 3
+        objectReferenceParameter: {fileID: 3224337408331765532, guid: f519e2d3e66bceb4d86165adf10b655b, type: 3}
+        floatParameter: 1
+        intParameter: 2
         messageOptions: 0
       transformMask: []
       maskType: 3
