@@ -18,7 +18,7 @@ public class CameraMovement : MonoBehaviour
     public float finalDistance;
     public float smoothness = 10f;
 
-    private Vector3 cameraPos = new Vector3(0, 3, -3);
+    public Vector3 cameraPos = new Vector3(0, 3, -3);
 
     void Start()
     {
@@ -28,6 +28,7 @@ public class CameraMovement : MonoBehaviour
         dirNormalized = realCamera.localPosition.normalized;
         finalDistance = realCamera.localPosition.magnitude;
 
+        maxDistance = 5f;
         // 커서 안보이게
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;

@@ -8,14 +8,14 @@ public class OrcManager : MonoBehaviour
 
     private Animator orcAnimator;
     bool isDead = false;
-    // Start is called before the first frame update
+
     void Start()
     {
         orcHp = 30;
         orcAnimator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if(orcHp <= 0 && !isDead)
@@ -30,4 +30,10 @@ public class OrcManager : MonoBehaviour
         orcHp = Mathf.Max(orcHp-damage, 0);
         print(orcHp);
     }
+
+    public void GiveDamage(int damage) 
+    {
+
+    }
+
 }

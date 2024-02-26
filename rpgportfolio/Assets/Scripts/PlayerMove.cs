@@ -5,6 +5,7 @@ using static UnityEngine.UI.Image;
 using UnityEngine.InputSystem.HID;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
+using RPGCharacterAnims.Actions;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -18,15 +19,21 @@ public class PlayerMove : MonoBehaviour
     public float jumpHeight;
     public float rotSpeed;
     public float smoothness = 10f;
+    float horizontalInput;
+    float verticalInput; 
 
     public float punchRange;
     public int punchDamage = 10;
+    public int playerHP;
 
     public bool run;
     private bool isGround = false;
+    public bool isJump = false;
+    public bool inputAllow = true;
 
     public LayerMask layer;
-    
+
+    public Vector3 moveDirection;
 
     void Start()
     {
@@ -34,20 +41,22 @@ public class PlayerMove : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         _camera = Camera.main;
 
-        walkspeed = 5f;
+        walkspeed = 3f;
         runSpeed = 8f;
-        jumpHeight = 5;
+        jumpHeight = 4f;
         rotSpeed = 20f;
 
         punchRange = 0.5f;
+        playerHP = 30;
     }
 
     void Update()
     {
         CheckGround();
-        if (Input.GetButtonDown("Jump") && isGround)  // 땅에 있어야 점프가능
+        if (Input.GetButtonDown("Jump") && isGround && !isJump &&inputAllow) 
         {
-            Invoke("Jump", 0.5f);
+            Jump();
+            isJump=true;
             _animator.SetTrigger("Jump");
         }
 
@@ -76,10 +85,13 @@ public class PlayerMove : MonoBehaviour
         cameraForward.y = 0f; // y 방향은 회전할 필요가 없으므로 0으로 설정
         cameraForward.Normalize(); // 벡터를 정규화하여 길이를 1로 만듦
 
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        if(inputAllow)
+        {
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+        }
         Vector3 rightVec = Quaternion.Euler(new Vector3(0, 90, 0)) * cameraForward; // 전방 벡터를 기준으로 오른쪽 벡터
-        Vector3 moveDirection = cameraForward * verticalInput + rightVec * horizontalInput;
+        moveDirection = cameraForward * verticalInput + rightVec * horizontalInput;
 
         if (moveDirection != Vector3.zero)
         {
@@ -102,17 +114,15 @@ public class PlayerMove : MonoBehaviour
     {
         RaycastHit hit;
 
-        // 발밑 0.2위에서 밑으로 0.25거리만큼 안에 Ground 레이어마스크 있는지
+        // 발밑 0.2위에서 밑으로 0.201거리만큼 안에 Ground 레이어마스크 있는지
         if (Physics.Raycast(transform.position + (Vector3.up *0.2f),
-            Vector3.down,out hit,0.21f,layer))
+            Vector3.down,out hit,0.201f,layer))
         {
             isGround = true;
         }
         else
         {
             isGround = false;
-
-            _animator.SetTrigger("Land");
         }
     }
 
@@ -120,6 +130,11 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 jumpPower = Vector3.up * jumpHeight;
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
-    }
 
+    }
+        
+    public void DamageAction(int attackPower)
+    {
+        playerHP -= attackPower;
+    }
 }
