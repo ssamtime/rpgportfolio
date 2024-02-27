@@ -47,7 +47,7 @@ public class PlayerMove : MonoBehaviour
         rotSpeed = 20f;
 
         punchRange = 0.5f;
-        playerHP = 30;
+        playerHP = 10;
     }
 
     void Update()

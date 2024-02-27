@@ -37,11 +37,12 @@ public class PlayerEventFunction : MonoBehaviour
         // 플레이어 주먹위치에서 레이 발사
         if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0), transform.forward, out hit2, punchRange))
         {
-            OrcManager enemy = hit2.collider.GetComponent<OrcManager>();
-            if (enemy != null)
+            //OrcManager enemy = hit2.collider.GetComponent<OrcManager>();
+            EnemyFSM enemyFSM = hit2.collider.GetComponent<EnemyFSM>();
+            if (enemyFSM != null)
             {
                 transform.LookAt(hit2.transform);
-                enemy.TakeDamage(punchDamage); // 적에게 피해 입히기
+                enemyFSM.HitEnemy(punchDamage);
             }
         }
     }
