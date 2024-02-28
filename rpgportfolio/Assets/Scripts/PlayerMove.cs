@@ -25,11 +25,13 @@ public class PlayerMove : MonoBehaviour
     public float punchRange;
     public int punchDamage = 10;
     public int playerHP;
+    public int playerMaxHP;
 
     public bool run;
     private bool isGround = false;
     public bool isJump = false;
     public bool inputAllow = true;
+    public bool isDead = false;
 
     public LayerMask layer;
 
@@ -48,6 +50,7 @@ public class PlayerMove : MonoBehaviour
 
         punchRange = 0.5f;
         playerHP = 10;
+        playerMaxHP = 30;
     }
 
     void Update()
@@ -74,6 +77,8 @@ public class PlayerMove : MonoBehaviour
         {
             run = false;
         }
+
+        
 
     }
 
@@ -136,5 +141,30 @@ public class PlayerMove : MonoBehaviour
     public void DamageAction(int attackPower)
     {
         playerHP -= attackPower;
+        print(playerHP);
+        if (playerHP <= 0)
+        {
+            if(!isDead)
+            {
+                _animator.Play("Die", -1, 0f);
+            }
+            isDead = true;
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        // 적 탐지
+        RaycastHit hit2;
+        // 플레이어 주먹위치에서 레이 발사
+
+        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
+             transform.forward, out hit2, punchRange))
+        {
+            // Hit된 지점까지 ray를 그려준다.
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0)
+                , transform.forward * punchRange);
+        }
     }
 }

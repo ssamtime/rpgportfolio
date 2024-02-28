@@ -1,3 +1,4 @@
+using Mirror.Examples.CCU;
 using RPGCharacterAnims.Actions;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class EnemyFSM : MonoBehaviour
     enum EnemyState
     {
         Idle,
+        Patrol,
         Move,
         Attack,
         Return,
@@ -31,11 +33,19 @@ public class EnemyFSM : MonoBehaviour
     float currentTime;           // 누적 시간    
     float attackDelay;           // 공격 딜레이    
     public int attackPower;      // 공격력    
+    public float attackRange;    // 공격범위    
     Vector3 originPos;           // 초기 위치 저장    
 
     int hp;
     int maxHp;
     bool isAttack = false;
+    bool isDeadAnim = false;
+
+    List<Vector3> Monster_Patrol_Positions;
+    int waypointIndex;
+    Vector3 waypointTarget;
+    Vector3 initPosition;
+    List<Vector3> patrolWaypoints;
 
     private void Start()
     {
@@ -60,9 +70,36 @@ public class EnemyFSM : MonoBehaviour
         currentTime = 0;
         attackDelay = 2.0f;
         attackPower = 3;
+        attackRange = 1.5f;
 
         hp = 20;
         maxHp = 30;
+
+        Monster_Patrol_Positions = new List<Vector3>
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(2, 0, 2),
+            new Vector3(-2, 0, -2),
+            new Vector3(2, 0, -2),
+            new Vector3(-2, 0, 2),
+            new Vector3(3, 0, 0),
+            new Vector3(-3, 0, 0)
+        };
+
+        //List<Vector3> positionsCopy = new List<Vector3>(Monster_Patrol_Positions);
+        //List<Vector3> selectedPositions = new List<Vector3>();
+
+        //int numberOfPosToSelect = 3; // 순찰할 지점의 개수
+        //// 위에서 지정한 개수만큼 patrol position을 랜덤하게 뽑는다.
+        //while (selectedPositions.Count < numberOfPosToSelect && positionsCopy.Count > 0)
+        //{
+        //    int randomIndex = Random.Range(0, positionsCopy.Count);
+        //    selectedPositions.Add(positionsCopy[randomIndex]);
+        //    positionsCopy.RemoveAt(randomIndex);
+        //}
+        // 모두 뽑으면 몹의 property인 patrol waypoint를 지정해준다.
+        SetPatrolWaypoints(Monster_Patrol_Positions);
+        StartPatrol();
     }
 
     private void Update()
@@ -104,7 +141,14 @@ public class EnemyFSM : MonoBehaviour
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", true);
         }
+        else
+        {
+            
+            // 만약에 위치 도달하면 다음위치로 이동
+        }
+        
     }
+
 
     // 이동 상태
     void Move()
@@ -154,9 +198,7 @@ public class EnemyFSM : MonoBehaviour
             // 일정 간격마다 플레이어를 공격한다
             currentTime += Time.deltaTime;
             if (currentTime > attackDelay)
-            {
-                player.GetComponent<PlayerMove>().DamageAction(attackPower);    //이거 도끼닿을때로                
-
+            {      
                 print("공격");
                 currentTime = 0;
 
@@ -238,7 +280,11 @@ public class EnemyFSM : MonoBehaviour
         _animator.SetBool("Idle", false);
         _animator.SetBool("Attack", false);
         _animator.SetBool("Walk", false);
-        _animator.SetTrigger("Dead");
+        if (!isDeadAnim)
+        {
+            _animator.Play("Die", -1, 0f);
+        }
+        isDeadAnim = true;
         
         // 2초 후 자기자신(적 오브젝트)를 제거한다
         yield return new WaitForSeconds(2.0f);
@@ -292,7 +338,7 @@ public class EnemyFSM : MonoBehaviour
     public void AttackFinish()
     {
         isAttack = false;
-        agent.Resume();
+        //agent.Resume();
         _animator.SetBool("Walk", false);
         _animator.SetBool("Attack", false);
         _animator.SetBool("Idle", true);
@@ -300,6 +346,55 @@ public class EnemyFSM : MonoBehaviour
 
     public void GiveDamage(int damage)
     {
+        RaycastHit hit2;
+        // 플레이어 주먹위치에서 레이 발사
+        if (Physics.Raycast(transform.position + (transform.forward * 0.1f) + new Vector3(0, 1.5f, 0),
+            transform.forward, out hit2, attackRange))
+        {
+            PlayerMove playerMoveScript = hit2.collider.GetComponent<PlayerMove>();
+            if (playerMoveScript != null)
+            {
+                transform.LookAt(hit2.transform);
+                playerMoveScript.DamageAction(attackPower);
+            }
+        }
+    }
 
+    public void SetPatrolWaypoints(List<Vector3> posDiffs)
+    {
+        foreach (Vector3 posDiff in posDiffs)
+        {
+            patrolWaypoints.Add(transform.position + posDiff);
+        }
+    }
+
+    public void StartPatrol()
+    {
+        waypointIndex = 0;
+        UpdateDestination();
+    }
+
+    void UpdateDestination()
+    {
+        if (patrolWaypoints.Count <= waypointIndex)
+            return;
+        waypointTarget = patrolWaypoints[waypointIndex];
+        agent.SetDestination(waypointTarget);
+    }
+
+    void OnDrawGizmos()
+    {
+        // 적 탐지
+        RaycastHit hit2;
+        // 플레이어 주먹위치에서 레이 발사
+
+        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
+            transform.forward, out hit2, attackRange))
+        {
+            // Hit된 지점까지 ray를 그려준다.
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0)
+                , transform.forward * attackRange);
+        }
     }
 }
