@@ -55,6 +55,8 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        if(isDead) return;
+
         CheckGround();
         if (Input.GetButtonDown("Jump") && isGround && !isJump &&inputAllow) 
         {
@@ -84,6 +86,8 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead) return;
+
         finalSpeed = (run) ? runSpeed : walkspeed;  // run이 true일 때는 runSpeed, false일 때는 speed
 
         Vector3 cameraForward = _camera.transform.forward; // 카메라의 전방 벡터를 플레이어의 forward로 사용
@@ -107,8 +111,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         _rigidbody.MovePosition(_rigidbody.position + moveDirection.normalized * finalSpeed * Time.deltaTime);
-
-        
+                
         // 속도에 따라 애니메이션 블렌드
         float percent = ((run) ? 1 : 0.5f) * moveDirection.magnitude;
         _animator.SetFloat("Blend", percent, 0.1f, Time.deltaTime);

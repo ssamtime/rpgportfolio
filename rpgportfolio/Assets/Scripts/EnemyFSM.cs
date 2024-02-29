@@ -18,7 +18,8 @@ public class EnemyFSM : MonoBehaviour
         Damaged,
         Dead
     }
-    
+
+    [SerializeField] GameObject patrolPath; // waypoint들 부모오브젝트
     [SerializeField] EnemyState m_State;          // 적 개체의 상태     
     private GameObject player;           // 플레이어   
     public NavMeshAgent agent; // 내비게이션 에이전트
@@ -40,12 +41,10 @@ public class EnemyFSM : MonoBehaviour
     int maxHp;
     bool isAttack = false;
     bool isDeadAnim = false;
+    int playerHP;
 
-    List<Vector3> Monster_Patrol_Positions;
     int waypointIndex;
-    Vector3 waypointTarget;
-    Vector3 initPosition;
-    List<Vector3> patrolWaypoints;
+    float stayTime;
 
     private void Start()
     {
@@ -66,48 +65,29 @@ public class EnemyFSM : MonoBehaviour
         attackDistance = 1.5f;
         moveSpeed = 3.0f;
         moveDistance = 20.0f;
-        rotationSpeed = 2.0f;
+        rotationSpeed = 15.0f;
         currentTime = 0;
         attackDelay = 2.0f;
         attackPower = 3;
-        attackRange = 1.5f;
+        attackRange = 2.5f;
 
         hp = 20;
         maxHp = 30;
+        playerHP = player.GetComponent<PlayerMove>().playerHP;
 
-        Monster_Patrol_Positions = new List<Vector3>
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(2, 0, 2),
-            new Vector3(-2, 0, -2),
-            new Vector3(2, 0, -2),
-            new Vector3(-2, 0, 2),
-            new Vector3(3, 0, 0),
-            new Vector3(-3, 0, 0)
-        };
+        waypointIndex = 0;
 
-        //List<Vector3> positionsCopy = new List<Vector3>(Monster_Patrol_Positions);
-        //List<Vector3> selectedPositions = new List<Vector3>();
 
-        //int numberOfPosToSelect = 3; // 순찰할 지점의 개수
-        //// 위에서 지정한 개수만큼 patrol position을 랜덤하게 뽑는다.
-        //while (selectedPositions.Count < numberOfPosToSelect && positionsCopy.Count > 0)
-        //{
-        //    int randomIndex = Random.Range(0, positionsCopy.Count);
-        //    selectedPositions.Add(positionsCopy[randomIndex]);
-        //    positionsCopy.RemoveAt(randomIndex);
-        //}
-        // 모두 뽑으면 몹의 property인 patrol waypoint를 지정해준다.
-        SetPatrolWaypoints(Monster_Patrol_Positions);
-        StartPatrol();
     }
+    
 
     private void Update()
     {
+        
         switch (m_State)
         {
             case EnemyState.Idle:
-                Idle();
+                Patrol();
                 break;
             case EnemyState.Move:
                 Move();
@@ -130,7 +110,7 @@ public class EnemyFSM : MonoBehaviour
     }
 
     // 대기 상태
-    void Idle()
+    void Patrol()
     {
         // 만약 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환한다
         if (Vector3.Distance(transform.position, playerTransform.position) < findDistance)
@@ -142,17 +122,40 @@ public class EnemyFSM : MonoBehaviour
             _animator.SetBool("Walk", true);
         }
         else
-        {
-            
+        {             
+            stayTime += Time.deltaTime;
+            if (stayTime > 7f)
+            {
+                stayTime = 0f;
+                agent.speed = 1f;
+                _animator.SetBool("Idle", false);
+                _animator.SetBool("Attack", false);
+                _animator.SetBool("Walk", true);
+                agent.SetDestination(patrolPath.transform.GetChild(waypointIndex).position);
+            }
+
             // 만약에 위치 도달하면 다음위치로 이동
+            if (Vector3.Distance(patrolPath.transform.GetChild(waypointIndex).position, transform.position) < 0.3f)
+            {
+                _animator.SetBool("Idle", true);
+                _animator.SetBool("Attack", false);
+                _animator.SetBool("Walk", false);
+
+                waypointIndex++;
+                if(waypointIndex>=patrolPath.transform.childCount)
+                    waypointIndex= 0;
+            }
         }
         
     }
-
-
+        
     // 이동 상태
     void Move()
     {
+        playerHP = player.GetComponent<PlayerMove>().playerHP;
+        if (playerHP <= 0) { Return(); }
+        agent.speed = 2f;
+
         // 현재 위치가 초기 위치에서 이동 가능한 범위를 넘어간다면?
         if (Vector3.Distance(transform.position, originPos) > moveDistance)
         {
@@ -166,10 +169,17 @@ public class EnemyFSM : MonoBehaviour
         // 만약 플레이어와의 거리가 공격 범위 밖이라면 플레이어를 향해 이동한다
         else if (Vector3.Distance(transform.position, playerTransform.position) > attackDistance)
         {
+            
             agent.SetDestination(player.transform.position);
             _animator.SetBool("Idle", false);
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", true);
+
+            // 플레이어를 바라보도록 회전
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
         }
         // 조건을 충족하지 못했을 경우에는 공격(Attack) 상태로 전환한다
         else
@@ -186,11 +196,14 @@ public class EnemyFSM : MonoBehaviour
     // 공격 상태
     void Attack()
     {
+        playerHP = player.GetComponent<PlayerMove>().playerHP;
+        if (playerHP <= 0) { Return(); }
+
         // 만약 플레이어가 공격 범위 내에 위치하는 경우 플레이어를 공격한다
         if (Vector3.Distance(transform.position, playerTransform.position) <= attackDistance)
         {
             agent.velocity = Vector3.zero;
-
+            // 플레이어를 바라보도록 회전
             Vector3 direction = (player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
@@ -264,32 +277,32 @@ public class EnemyFSM : MonoBehaviour
 
     // 사망 상태
     void Dead()
-    {
-        // 진행 중인 피격 관련 코루틴을 중지한다
-        StopAllCoroutines();
-
+    {     
         // 사망 상태를 처리하기 위한 코루틴을 실행한다
         StartCoroutine(DeadProcess());
+
+        //// 진행 중인 피격 관련 코루틴을 중지한다
+        //StopAllCoroutines();
     }
 
     // 사망 상태 처리용 코루틴 함수
     IEnumerator DeadProcess()
-    {
-        //// 캐릭터 컨트롤러 비활성화
-        //cc.enabled = false;
-        _animator.SetBool("Idle", false);
-        _animator.SetBool("Attack", false);
-        _animator.SetBool("Walk", false);
+    {        
+        // 한번만실행
         if (!isDeadAnim)
         {
+            isDeadAnim = true;
+
+            _animator.SetBool("Idle", false);
+            _animator.SetBool("Attack", false);
+            _animator.SetBool("Walk", false);
             _animator.Play("Die", -1, 0f);
+            
+            // 5초 후 자기자신을 제거한다
+            yield return new WaitForSeconds(5.0f);
+            print("소멸!");
+            Destroy(gameObject);
         }
-        isDeadAnim = true;
-        
-        // 2초 후 자기자신(적 오브젝트)를 제거한다
-        yield return new WaitForSeconds(2.0f);
-        print("소멸!");
-        Destroy(gameObject);
     }
 
     // 데미지 처리용 코루틴 함수
@@ -347,7 +360,7 @@ public class EnemyFSM : MonoBehaviour
     public void GiveDamage(int damage)
     {
         RaycastHit hit2;
-        // 플레이어 주먹위치에서 레이 발사
+        // 오브젝트 중간쯤에서 레이 발사해서 레이에 닿으면
         if (Physics.Raycast(transform.position + (transform.forward * 0.1f) + new Vector3(0, 1.5f, 0),
             transform.forward, out hit2, attackRange))
         {
@@ -360,27 +373,6 @@ public class EnemyFSM : MonoBehaviour
         }
     }
 
-    public void SetPatrolWaypoints(List<Vector3> posDiffs)
-    {
-        foreach (Vector3 posDiff in posDiffs)
-        {
-            patrolWaypoints.Add(transform.position + posDiff);
-        }
-    }
-
-    public void StartPatrol()
-    {
-        waypointIndex = 0;
-        UpdateDestination();
-    }
-
-    void UpdateDestination()
-    {
-        if (patrolWaypoints.Count <= waypointIndex)
-            return;
-        waypointTarget = patrolWaypoints[waypointIndex];
-        agent.SetDestination(waypointTarget);
-    }
 
     void OnDrawGizmos()
     {
