@@ -9,6 +9,8 @@ public class PlayerEventFunction : MonoBehaviour
 {
     public float punchRange;
     public int punchDamage;
+    public float swordRange;
+    public int swordDamage;
 
     GameObject player;
     PlayerMove _PlayerMoveScript;
@@ -19,6 +21,8 @@ public class PlayerEventFunction : MonoBehaviour
     {
         punchRange = 0.5f;
         punchDamage = 10;
+        swordRange = 1.6f;
+        swordDamage = 15;
 
         player = GameObject.FindWithTag("Player");
         _PlayerMoveScript = player.GetComponent<PlayerMove>();
@@ -45,8 +49,24 @@ public class PlayerEventFunction : MonoBehaviour
                 transform.LookAt(hit2.transform);
                 enemyFSM.HitEnemy(punchDamage);
             }
-        }        
+        }
+    }
+    public void SwordDamageEvent()
+    {
+        // 적 탐지
+        RaycastHit hit2;
+        // 플레이어 주먹위치에서 레이 발사
 
+        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
+            transform.forward, out hit2, swordRange))
+        {
+            EnemyFSM enemyFSM = hit2.collider.GetComponent<EnemyFSM>();
+            if (enemyFSM != null)
+            {
+                transform.LookAt(hit2.transform);
+                enemyFSM.HitEnemy(swordDamage);
+            }
+        }
     }
 
     public void JumpEnd()
@@ -62,6 +82,15 @@ public class PlayerEventFunction : MonoBehaviour
         // 0.5초동안 입력못받도록
         _PlayerMoveScript.inputAllow = false;
         Invoke("InputAllow", 0.7f);
+    }
+    public void SwordStop()
+    {
+        _PlayerMoveScript.walkspeed = 0f;
+        _PlayerMoveScript.runSpeed = 0f;
+
+        // 0.5초동안 입력못받도록
+        _PlayerMoveScript.inputAllow = false;
+        Invoke("InputAllow", 1.0f);
     }
 
     public void InputAllow()

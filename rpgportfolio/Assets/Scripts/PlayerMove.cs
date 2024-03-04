@@ -13,12 +13,14 @@ public class PlayerMove : MonoBehaviour
     private Camera _camera;
     private Rigidbody _rigidbody;
 
+    [SerializeField] AnimatorOverrideController swordOverrideAnimator = null;
+
     public float walkspeed;
     public float runSpeed;
     public float finalSpeed;
-    public float jumpHeight;
-    public float rotSpeed;
-    public float smoothness = 10f;
+    float jumpHeight;
+    float rotSpeed;
+    float smoothness = 10f;
     float horizontalInput;
     float verticalInput; 
 
@@ -51,6 +53,9 @@ public class PlayerMove : MonoBehaviour
         punchRange = 0.5f;
         playerHP = 10;
         playerMaxHP = 30;
+
+        _animator.runtimeAnimatorController = swordOverrideAnimator;
+
     }
 
     void Update()
