@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6db2057107dd28943b9595ab309a373d
+guid: abb0d110d2a27fc439a8606f2a89dd4a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: vis2k_Ga_Skin_Body_ranger.000
-    second: {fileID: 2100000, guid: 87e0fd74c45150c45b4ff99421c04322, type: 2}
+    second: {fileID: 2100000, guid: 59d65af64f4ff2d45a85046a1711723f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -38,11 +38,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Jump
+      name: SwordDie
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 57
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

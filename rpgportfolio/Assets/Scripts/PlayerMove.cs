@@ -14,6 +14,10 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody _rigidbody;
 
     [SerializeField] AnimatorOverrideController swordOverrideAnimator = null;
+    [SerializeField] AnimatorOverrideController originalOverrideAnimator;
+
+    public GameObject equippedShield;
+    public GameObject equippedSword;
 
     public float walkspeed;
     public float runSpeed;
@@ -52,9 +56,7 @@ public class PlayerMove : MonoBehaviour
 
         punchRange = 0.5f;
         playerHP = 10;
-        playerMaxHP = 30;
-
-        _animator.runtimeAnimatorController = swordOverrideAnimator;
+        playerMaxHP = 30;        
 
     }
 
@@ -85,7 +87,18 @@ public class PlayerMove : MonoBehaviour
             run = false;
         }
 
-        
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _animator.runtimeAnimatorController= originalOverrideAnimator;
+            equippedShield.SetActive(false);
+            equippedSword.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            _animator.runtimeAnimatorController = swordOverrideAnimator;
+            equippedShield.SetActive(true);
+            equippedSword.SetActive(true);
+        }
 
     }
 

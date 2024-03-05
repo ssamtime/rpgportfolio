@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9fa200187ae9bc641b83f079cbabfb6d
+guid: f5549117c420ee1478e309807e61c747
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -38,11 +38,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SwordSlash
+      name: Uppercut
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 45
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -62,22 +62,29 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.14112903
-        functionName: SwordStop
+      - time: 0.14919356
+        functionName: PunchStop
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.44545457
-        functionName: SwordDamageEvent
+      - time: 0.37922075
+        functionName: PunchDamageEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.91761094
+      - time: 0.9922078
         functionName: InputAllow
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.23636363
+        functionName: PunchStop
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

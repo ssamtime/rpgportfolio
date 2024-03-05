@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.HID;
 
+// 플레이어 이벤트함수들 모아놓은곳
+
 public class PlayerEventFunction : MonoBehaviour
 {
     public float punchRange;
@@ -74,30 +76,28 @@ public class PlayerEventFunction : MonoBehaviour
         _PlayerMoveScript.isJump = false;
     }
 
-    public void Stop()
+    public void PunchStop()
     {
         _PlayerMoveScript.walkspeed = 0f;
         _PlayerMoveScript.runSpeed = 0f;
 
-        // 0.5초동안 입력못받도록
         _PlayerMoveScript.inputAllow = false;
-        Invoke("InputAllow", 0.7f);
     }
     public void SwordStop()
     {
         _PlayerMoveScript.walkspeed = 0f;
         _PlayerMoveScript.runSpeed = 0f;
 
-        // 0.5초동안 입력못받도록
         _PlayerMoveScript.inputAllow = false;
-        Invoke("InputAllow", 1.0f);
     }
 
+    // 공격애니메이션 마지막에 실행되는 이벤트함수
     public void InputAllow()
     {
         _PlayerMoveScript.inputAllow = true;
         _PlayerMoveScript.walkspeed = 4f;
         _PlayerMoveScript.runSpeed = 8f;
     }
+
 
 }

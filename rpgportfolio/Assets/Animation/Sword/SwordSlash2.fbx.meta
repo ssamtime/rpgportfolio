@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9fa200187ae9bc641b83f079cbabfb6d
+guid: e45ef5b36bd28e841bf4be0025874aab
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: vis2k_Ga_Skin_Body_ranger.000
-    second: {fileID: 2100000, guid: 87e0fd74c45150c45b4ff99421c04322, type: 2}
+    second: {fileID: 2100000, guid: 59d65af64f4ff2d45a85046a1711723f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -38,11 +38,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: SwordSlash
+      name: SwordSlash2
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 45
+      firstFrame: 10.4
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -62,21 +62,21 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.14112903
+      - time: 0.13709678
         functionName: SwordStop
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.44545457
+      - time: 0.35714284
         functionName: SwordDamageEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.91761094
+      - time: 0.8883588
         functionName: InputAllow
         data: 
         objectReferenceParameter: {instanceID: 0}
