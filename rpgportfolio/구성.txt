@@ -30,15 +30,7 @@ ui
 - 상점아저씨를 커서 위로두면 테두리뜨게
 클릭하면 상점창
 
-커서
-- ctrl누르면 토글
+커서 ctrl누르면 토글
 
-이벤트 시스템은 다수의 이벤트를 지원하며 사용자가 작성한 입력 모듈을 통해 한층 더 효율적으로 커스터마이징할 수 있습니다.
+아이템착용 
 
-스탠드얼론 입력 모듈과 터치 입력 모듈이 지원하는 이벤트는 인터페이스에 의해 제공되며, 인터페이스를 구현하여 MonoBehaviour에 적용할 수 있습니다. 유효한 이벤트 시스템이 설정되어 있다면 적절한 시점에 이벤트가 호출됩니다.
-
-IPointerEnterHandler - OnPointerEnter - 포인터가 오브젝트에 들어갈 때 호출됩니다.
-IPointerExitHandler - OnPointerExit - 포인터가 오브젝트에서 나올 때 호출됩니다.
-IPointerDownHandler - OnPointerDown - 포인터가 오브젝트 위에서 눌렸을 때 호출됩니다.
-IPointerUpHandler - OnPointerUp - 포인터를 뗄 때 호출됩니다(눌려 있던 오브젝트에서 호출됩니다).
-IPointerClickHandler - OnPointerClick - 동일 오브젝트에서 포인터를 누르고 뗄 때 호출됩니다.
