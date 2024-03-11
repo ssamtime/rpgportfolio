@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class SwordEquip : MonoBehaviour, IPointerClickHandler
@@ -13,6 +14,8 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
     public GameObject sword;
     GameObject player;
     PlayerMove playermoveScript;
+
+    public Image instantiateImageAtInven;
 
     void Start()
     {
@@ -33,6 +36,7 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
             {
                 sword.SetActive(false);
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
+                Instantiate<Image>(instantiateImageAtInven, ImageAtEquipWindow.transform);
 
             }
             else

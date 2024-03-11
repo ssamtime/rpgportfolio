@@ -11,15 +11,19 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
     bool isDoubleClicked = false;
 
     public Image instantiateImageAtInven;
-    public Image[] InventorySlots;
-    
-    List<int> inventorySlotList = new List<int>();
 
-    int index;
+    GameManager gameManager;
+
+    public int itemPrice;
+
 
     void Start()
     {
-        index = 0;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if( gameManager == null )
+        { Debug.Log("gameManager 못찾음");}
+
+        gameManager.index = 0;
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -31,9 +35,14 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
 
             //Debug.Log("더블클릭댐");
 
-            inventorySlotList.Add(index);
-            Instantiate<Image>(instantiateImageAtInven, InventorySlots[index].transform);
-            index++;
+            if(gameManager.haveMoney >= itemPrice)
+            {
+                gameManager.inventorySlotList.Add(gameManager.index);
+                Instantiate<Image>(instantiateImageAtInven, gameManager.InventorySlots[gameManager.index].transform);
+                gameManager.index++;
+
+                gameManager.haveMoney -= itemPrice;
+            }
         }
         else
         {

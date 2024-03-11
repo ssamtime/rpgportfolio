@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
+using UnityEngine.UI;
 using UnityEngine.InputSystem.HID;
 using Unity.VisualScripting;
-using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -46,6 +46,12 @@ public class PlayerMove : MonoBehaviour
 
     public Vector3 moveDirection;
 
+    GameManager gameManager;
+
+    public Image equipWindow;
+    public Image inventoryWindow;
+    public Image shopWindow;
+
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -59,7 +65,9 @@ public class PlayerMove : MonoBehaviour
 
         punchRange = 0.5f;
         playerHP = 10;
-        playerMaxHP = 30;        
+        playerMaxHP = 30;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -77,8 +85,14 @@ public class PlayerMove : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0)) 
         {
-            _animator.SetTrigger("Punch");
-
+            // ui 창이 켜져있거나 npc 위에 커서있으면 공격 안됨
+            if(!(equipWindow.gameObject.activeSelf||
+                inventoryWindow.gameObject.activeSelf||
+                shopWindow.gameObject.activeSelf||
+                gameManager.blockClick))
+            {
+                _animator.SetTrigger("Punch");
+            }
         }
 
         if (Input.GetKey(KeyCode.LeftShift))
@@ -90,7 +104,33 @@ public class PlayerMove : MonoBehaviour
             run = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        // i누르면 인벤토리 on,off
+        if(Input.GetKeyDown(KeyCode.I)) 
+        {
+            if(inventoryWindow.gameObject.activeSelf) 
+            {
+                inventoryWindow.gameObject.SetActive(false);
+            }
+            else 
+            {
+                inventoryWindow.gameObject.SetActive(true);
+            }
+        }
+
+        // p누르면 인벤토리 on,off
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (equipWindow.gameObject.activeSelf)
+            {
+                equipWindow.gameObject.SetActive(false);
+            }
+            else
+            {
+                equipWindow.gameObject.SetActive(true);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _animator.runtimeAnimatorController= originalOverrideAnimator;
             equippedShield.SetActive(false);

@@ -1,18 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BootsEquip : MonoBehaviour
+public class BootsEquip : MonoBehaviour, IPointerClickHandler
 {
-    // Start is called before the first frame update
+    float interval = 0.25f;
+    float doubleClickedTime = -1.0f;
+    bool isDoubleClicked = false;
+
+
+    public GameObject boots;
+    GameObject player;
+    PlayerMove playermoveScript;
+
     void Start()
     {
-        
+        player = GameObject.FindWithTag("Player");
+        playermoveScript = player.GetComponent<PlayerMove>();
+        boots = playermoveScript.equippedBoots;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerClick(PointerEventData eData)
     {
-        
+        if ((Time.time - doubleClickedTime) < interval)
+        {
+            isDoubleClicked = true;
+            doubleClickedTime = -1.0f;
+
+            // 더블클릭시 아이템 장비or해제
+            if (boots.activeSelf)
+            {
+                boots.SetActive(false);
+            }
+            else
+            {
+                boots.SetActive(true);
+            }
+        }
+        else
+        {
+            isDoubleClicked = false;
+            doubleClickedTime = Time.time;
+        }
     }
 }
