@@ -15,13 +15,17 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
     GameObject player;
     PlayerMove playermoveScript;
 
+    GameManager gameManager;
     public Image instantiateImageAtInven;
+    Image instanceImage;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player");
         playermoveScript = player.GetComponent<PlayerMove>();
         sword = playermoveScript.equippedSword;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -36,13 +40,17 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
             {
                 sword.SetActive(false);
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
-                Instantiate<Image>(instantiateImageAtInven, ImageAtEquipWindow.transform);
+                if(instanceImage)
+                {
+                    Destroy(instanceImage);
+                }
 
             }
             else
             {
                 sword.SetActive(true);
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
+                instanceImage=Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
             }
         }
         else

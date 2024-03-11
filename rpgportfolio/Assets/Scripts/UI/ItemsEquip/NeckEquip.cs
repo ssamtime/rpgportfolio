@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class NeckEquip : MonoBehaviour, IPointerClickHandler
@@ -14,11 +15,17 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
     GameObject player;
     PlayerMove playermoveScript;
 
+    GameManager gameManager;
+    public Image instantiateImageAtInven;
+    Image instanceImage;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
         playermoveScript = player.GetComponent<PlayerMove>();
         neck = playermoveScript.equippedNeck;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -32,10 +39,17 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
             if (neck.activeSelf)
             {
                 neck.SetActive(false);
+                if (instanceImage)
+                {
+                    Destroy(instanceImage);
+
+                }
             }
             else
             {
                 neck.SetActive(true);
+                instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.neckEquip.transform);
+
             }
         }
         else

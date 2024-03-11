@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4120,69 +4120,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 195686148879823788, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 707687939336558935, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image
-      objectReference: {fileID: 0}
-    - target: {fileID: 708656640408701782, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 708656640408701782, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000563679018836346, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1225346358447483628, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 1388643433154721818, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_neck
-      objectReference: {fileID: 0}
-    - target: {fileID: 1508330073348297206, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1525135899498836896, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3670264583541688883, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image
-      objectReference: {fileID: 0}
-    - target: {fileID: 4129137431821916650, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_boots
-      objectReference: {fileID: 0}
     - target: {fileID: 4253772400231194934, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
       propertyPath: m_Name
       value: WindowsCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 4284992346273715206, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: image_head
-      objectReference: {fileID: 0}
-    - target: {fileID: 5272713480178143804, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 5498289938898032234, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_shoulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 5641678067746912204, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_shield
       objectReference: {fileID: 0}
     - target: {fileID: 5742339430244155616, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
       propertyPath: m_Pivot.x
@@ -4264,54 +4204,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5900064134495904716, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5962905974040253931, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6119789178915081772, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 6119789178915081772, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 6139806789394360790, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_tasset
-      objectReference: {fileID: 0}
-    - target: {fileID: 7218763319908179497, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7218763319908179497, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7473467367949266133, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_haveMoney
-      objectReference: {fileID: 0}
-    - target: {fileID: 8089918399262894290, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_necklace
-      objectReference: {fileID: 0}
-    - target: {fileID: 8172664617543017297, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: m_Name
-      value: Image_sword
-      objectReference: {fileID: 0}
-    - target: {fileID: 8229647667592397512, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-      propertyPath: itemPrice
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3292860091860388865, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
-    - {fileID: 2825452236571862084, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48d5fc646bbebfa4e93a925f96f0c969, type: 3}

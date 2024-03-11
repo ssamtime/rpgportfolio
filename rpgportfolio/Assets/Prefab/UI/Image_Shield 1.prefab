@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shiled: {fileID: 0}
+  instantiateImageAtInven: {fileID: 9041564775116444505}

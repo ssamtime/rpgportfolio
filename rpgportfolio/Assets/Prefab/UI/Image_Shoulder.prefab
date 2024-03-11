@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shoulder: {fileID: 0}
+  instantiateImageAtInven: {fileID: 2962810814857526182}

@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neck: {fileID: 0}
+  instantiateImageAtInven: {fileID: 1713556678152308183}

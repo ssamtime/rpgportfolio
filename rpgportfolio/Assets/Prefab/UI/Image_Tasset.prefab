@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tasset: {fileID: 0}
+  instantiateImageAtInven: {fileID: 7246440241852934453}

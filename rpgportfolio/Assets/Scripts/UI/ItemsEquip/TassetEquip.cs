@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class TassetEquip : MonoBehaviour, IPointerClickHandler
@@ -14,11 +15,17 @@ public class TassetEquip : MonoBehaviour, IPointerClickHandler
     GameObject player;
     PlayerMove playermoveScript;
 
+    GameManager gameManager;
+    public Image instantiateImageAtInven;
+    Image instanceImage;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
         playermoveScript = player.GetComponent<PlayerMove>();
         tasset = playermoveScript.equippedTasset;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -32,10 +39,17 @@ public class TassetEquip : MonoBehaviour, IPointerClickHandler
             if (tasset.activeSelf)
             {
                 tasset.SetActive(false);
+                if (instanceImage)
+                {
+                    Destroy(instanceImage);
+
+                }
             }
             else
             {
                 tasset.SetActive(true);
+                instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.tassetEquip.transform);
+
             }
         }
         else

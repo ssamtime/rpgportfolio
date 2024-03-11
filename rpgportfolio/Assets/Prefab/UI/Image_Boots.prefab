@@ -89,3 +89,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boots: {fileID: 0}
+  instantiateImageAtInven: {fileID: 5169664686367387792}
