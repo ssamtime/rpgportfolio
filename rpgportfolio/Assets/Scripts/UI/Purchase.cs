@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class Purchase : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] int price;
+    [SerializeField] string itemName;
+    [SerializeField] Image imageToInventory;
+
+    GameManager gameManager;
+
+    public Image confirmWindow;
+
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
     bool isDoubleClicked = false;
 
-    public Image instantiateImageAtInven;
-
-    GameManager gameManager;
-
-    public int itemPrice;
-
-
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        if( gameManager == null )
-        { Debug.Log("gameManager 못찾음");}
 
-        gameManager.index = 0;
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -34,15 +33,11 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
             doubleClickedTime = -1.0f;
 
             //Debug.Log("더블클릭댐");
+            gameManager.itemPrice = price;
+            gameManager.itemNameText = itemName;
+            gameManager.instantiateImageAtInven = imageToInventory;
 
-            if(gameManager.haveMoney >= itemPrice)
-            {
-                gameManager.inventorySlotList.Add(gameManager.index);
-                Instantiate<Image>(instantiateImageAtInven, gameManager.InventorySlots[gameManager.index].transform);
-                gameManager.index++;
-
-                gameManager.haveMoney -= itemPrice;
-            }
+            confirmWindow.gameObject.SetActive(true);
         }
         else
         {
@@ -51,5 +46,5 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
         }
     }
 
-
+    
 }

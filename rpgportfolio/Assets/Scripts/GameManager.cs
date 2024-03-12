@@ -24,6 +24,11 @@ public class GameManager : MonoBehaviour
     public Image shoulderEquip;
     //public Image hatEquip;
     //public Image necklaceEquip;
+
+    public Image instantiateImageAtInven;
+    public int itemPrice;
+    public string itemNameText;
+
     void Start()
     {
         blockClick = false;
