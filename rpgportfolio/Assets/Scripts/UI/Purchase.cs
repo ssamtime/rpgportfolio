@@ -11,6 +11,7 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
     [SerializeField] string itemName;
     [SerializeField] Image imageToInventory;
 
+
     GameManager gameManager;
 
     public Image confirmWindow;
@@ -18,6 +19,7 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
     bool isDoubleClicked = false;
+
 
     void Start()
     {
@@ -33,6 +35,7 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
             doubleClickedTime = -1.0f;
 
             //Debug.Log("¥ı∫Ì≈¨∏Ø¥Ô");
+
             gameManager.itemPrice = price;
             gameManager.itemNameText = itemName;
             gameManager.instantiateImageAtInven = imageToInventory;
@@ -44,7 +47,7 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = false;
             doubleClickedTime = Time.time;
         }
+
     }
 
-    
 }

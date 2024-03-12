@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     public int sellPrice;
     public string sellItemNameString;
 
+    public Image swordToolTipImage;
+
     void Start()
     {
         blockClick = false;

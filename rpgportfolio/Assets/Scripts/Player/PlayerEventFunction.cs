@@ -73,6 +73,10 @@ public class PlayerEventFunction : MonoBehaviour
     public void JumpEnd()
     {
         _PlayerMoveScript.isJump = false;
+
+        _PlayerMoveScript.inputAllow = true;
+        _PlayerMoveScript.walkspeed = 4f;
+        _PlayerMoveScript.runSpeed = 8f;
     }
 
     public void PunchStop()
@@ -83,6 +87,13 @@ public class PlayerEventFunction : MonoBehaviour
         _PlayerMoveScript.inputAllow = false;
     }
     public void SwordStop()
+    {
+        _PlayerMoveScript.walkspeed = 0f;
+        _PlayerMoveScript.runSpeed = 0f;
+
+        _PlayerMoveScript.inputAllow = false;
+    }
+    public void Stop()
     {
         _PlayerMoveScript.walkspeed = 0f;
         _PlayerMoveScript.runSpeed = 0f;

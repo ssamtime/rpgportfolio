@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SwordEquip : MonoBehaviour, IPointerClickHandler
+public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
@@ -23,6 +23,8 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
     [SerializeField] string sellItemName;
     [SerializeField] int sellItemPrice;
 
+    [SerializeField] Image toolTipImage;
+
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -30,6 +32,8 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
         sword = playermoveScript.equippedSword;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        toolTipImage = gameManager.swordToolTipImage;
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -39,31 +43,33 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
 
-            if(purchaseWindow.gameObject.activeSelf)
-            {
-                gameManager.sellItemNameString = sellItemName;
+            //if(purchaseWindow.gameObject.activeSelf)
+            //{
+            //    gameManager.sellItemNameString = sellItemName;
 
-                sellConfirmWindow.gameObject.SetActive(false);
+            //    sellConfirmWindow.gameObject.SetActive(false);
+            //}
+            //else
+            //{
+
+            //}
+
+            // 더블클릭시 아이템 장비or해제
+            if (sword.activeSelf)
+            {
+                sword.SetActive(false);
+                playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
+                //if (instanceImage)
+                //{
+                //    Destroy(instanceImage); 지우면댐
+                //}
+
             }
             else
             {
-                // 더블클릭시 아이템 장비or해제
-                if (sword.activeSelf)
-                {
-                    sword.SetActive(false);
-                    playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
-                    if (instanceImage)
-                    {
-                        Destroy(instanceImage);
-                    }
-
-                }
-                else
-                {
-                    sword.SetActive(true);
-                    playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
-                    instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
-                }
+                sword.SetActive(true);
+                playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
+                //instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
             }
         }
         else
@@ -71,5 +77,16 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = false;
             doubleClickedTime = Time.time;
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        toolTipImage.gameObject.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        toolTipImage.gameObject.SetActive(false);
+
     }
 }

@@ -62,15 +62,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.99906105
-        functionName: JumpEnd
+      - time: 0.5765125
+        functionName: Stop
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5765125
-        functionName: Stop
+      - time: 1
+        functionName: JumpEnd
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
