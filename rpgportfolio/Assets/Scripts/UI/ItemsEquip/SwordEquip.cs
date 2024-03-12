@@ -10,7 +10,6 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
     float doubleClickedTime = -1.0f;
     bool isDoubleClicked = false;
 
-
     public GameObject sword;
     GameObject player;
     PlayerMove playermoveScript;
@@ -18,6 +17,11 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
     GameManager gameManager;
     public Image instantiateImageAtInven;
     Image instanceImage;
+
+    public Image purchaseWindow;
+    public Image sellConfirmWindow;
+    [SerializeField] string sellItemName;
+    [SerializeField] int sellItemPrice;
 
     void Start()
     {
@@ -35,22 +39,31 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
 
-            // 더블클릭시 아이템 장비or해제
-            if (sword.activeSelf)
+            if(purchaseWindow.gameObject.activeSelf)
             {
-                sword.SetActive(false);
-                playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
-                if(instanceImage)
-                {
-                    Destroy(instanceImage);
-                }
+                gameManager.sellItemNameString = sellItemName;
 
+                sellConfirmWindow.gameObject.SetActive(false);
             }
             else
             {
-                sword.SetActive(true);
-                playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
-                instanceImage=Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
+                // 더블클릭시 아이템 장비or해제
+                if (sword.activeSelf)
+                {
+                    sword.SetActive(false);
+                    playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
+                    if (instanceImage)
+                    {
+                        Destroy(instanceImage);
+                    }
+
+                }
+                else
+                {
+                    sword.SetActive(true);
+                    playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
+                    instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
+                }
             }
         }
         else

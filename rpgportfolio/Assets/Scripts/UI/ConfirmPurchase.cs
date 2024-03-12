@@ -13,22 +13,20 @@ public class ConfirmPurchase : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        gameManager.index = 0;
     }
 
 
     void Update()
-    {
-        
+    {        
     }
 
     public void PurchaseItem()
     {
         if (gameManager.haveMoney >= gameManager.itemPrice)
         {
-            gameManager.inventorySlotList.Add(gameManager.index);
-            Instantiate<Image>(gameManager.instantiateImageAtInven, gameManager.InventorySlots[gameManager.index].transform);
-            gameManager.index++;
+            gameManager.inventorySlotList.Add(gameManager.listIndex);
+            Instantiate<Image>(gameManager.instantiateImageAtInven, gameManager.InventorySlots[gameManager.listIndex].transform);
+            gameManager.listIndex++;
 
             gameManager.haveMoney -= gameManager.itemPrice;
 

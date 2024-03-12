@@ -41,7 +41,7 @@ public class ShieldEquip : MonoBehaviour, IPointerClickHandler
                 shiled.SetActive(false); 
                 if (instanceImage)
                 {
-                    Destroy(instanceImage);
+                    Destroy(instanceImage);//<--??
 
                 }
             }

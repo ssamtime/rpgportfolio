@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public Image[] InventorySlots;
 
     public List<int> inventorySlotList = new List<int>();
-    public int index;
+    public int listIndex;
     public int haveMoney;
 
     public bool blockClick;
@@ -29,10 +29,15 @@ public class GameManager : MonoBehaviour
     public int itemPrice;
     public string itemNameText;
 
+
+    public int sellPrice;
+    public string sellItemNameString;
+
     void Start()
     {
         blockClick = false;
         haveMoney = 500;
+        listIndex = 0;
     }
 
     void Update()
