@@ -7,8 +7,16 @@ public class CloseButton : MonoBehaviour
 {
     public Image closeImage;
 
+    GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
     public void CloseWindow()
     {
         closeImage.gameObject.SetActive(false);
+        gameManager.merchantNPCturn = false;
+        gameManager.blackSmithNPCturn = false;
     }
 }

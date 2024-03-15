@@ -23,7 +23,7 @@ public class PlayerEventFunction : MonoBehaviour
         punchRange = 0.5f;
         punchDamage = 10;
         swordRange = 1.6f;
-        swordDamage = 15;
+        swordDamage = 40;
 
         player = GameObject.FindWithTag("Player");
         _PlayerMoveScript = player.GetComponent<PlayerMove>();

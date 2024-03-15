@@ -45,8 +45,12 @@ public class EnemyFSM : MonoBehaviour
     int waypointIndex;
     float stayTime;
 
+    GameManager gameManager;
+
     private void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         // 최초의 상태는 대기 상태
         m_State = EnemyState.Idle;
 
@@ -67,12 +71,12 @@ public class EnemyFSM : MonoBehaviour
         rotationSpeed = 15.0f;
         currentTime = 0;
         attackDelay = 2.0f;
-        attackPower = 3;
-        attackRange = 2.5f;
+        attackPower = 30;
+        attackRange = 2.5f; //3f로할가나
 
-        hp = 20;
-        maxHp = 30;
-        playerHP = player.GetComponent<PlayerMove>().playerHP;
+        hp = 50;
+        maxHp = 100;
+        playerHP = gameManager.playerHP;
 
         waypointIndex = 0;
 
@@ -111,6 +115,15 @@ public class EnemyFSM : MonoBehaviour
     // 대기 상태
     void Patrol()
     {
+        playerHP = gameManager.playerHP;
+        if (playerHP <= 0)
+        {
+            _animator.SetBool("Idle", true);
+            _animator.SetBool("Attack", false);
+            _animator.SetBool("Walk", false);
+            return;
+        }
+
         // 만약 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환한다
         if (Vector3.Distance(transform.position, playerTransform.position) < findDistance)
         {
@@ -151,8 +164,12 @@ public class EnemyFSM : MonoBehaviour
     // 이동 상태
     void Move()
     {
-        playerHP = player.GetComponent<PlayerMove>().playerHP;
-        if (playerHP <= 0) { Return(); }
+        playerHP = gameManager.playerHP;
+        if (playerHP <= 0) 
+        {
+            m_State = EnemyState.Return;
+            return;
+        }
         agent.speed = 2f;
 
         // 현재 위치가 초기 위치에서 이동 가능한 범위를 넘어간다면?
@@ -195,8 +212,12 @@ public class EnemyFSM : MonoBehaviour
     // 공격 상태
     void Attack()
     {
-        playerHP = player.GetComponent<PlayerMove>().playerHP;
-        if (playerHP <= 0) { Return(); }
+        playerHP = gameManager.playerHP;
+        if (playerHP <= 0)
+        {
+            m_State = EnemyState.Return;
+            return;
+        }
 
         // 만약 플레이어가 공격 범위 내에 위치하는 경우 플레이어를 공격한다
         if (Vector3.Distance(transform.position, playerTransform.position) <= attackDistance)
@@ -328,7 +349,14 @@ public class EnemyFSM : MonoBehaviour
         }
 
         // 플레이어의 공격력만큼 적의 체력을 감소시킨다
-        hp -= hitPower;
+        if(hp-hitPower < 0)
+        {
+            hp = 0;
+        }
+        else
+        {
+            hp -= hitPower;
+        }
         print(hp);
 
         // 적 체력이 0보다 크면 피격 상태로 전환한다

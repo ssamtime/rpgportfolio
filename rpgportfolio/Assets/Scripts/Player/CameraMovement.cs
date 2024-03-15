@@ -21,6 +21,8 @@ public class CameraMovement : MonoBehaviour
 
     public Vector3 cameraPos = new Vector3(0, 3, -3);
 
+    GameManager gameManager;
+
     void Start()
     {
         // 변수 초기화
@@ -30,16 +32,19 @@ public class CameraMovement : MonoBehaviour
         finalDistance = realCamera.localPosition.magnitude;
 
         maxDistance = 5f;
-        // 커서 안보이게
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
 
     void Update()
     {
-        rotX += -1 * Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-        rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        if (gameManager.canScreenRotate)
+        {
+            rotX += -1 * Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+            rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        }
+        
 
         rotX = Mathf.Clamp(rotX, minClampAngle, maxClampAngle);
         Quaternion rot = Quaternion.Euler(rotX, rotY, 0);

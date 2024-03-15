@@ -33,14 +33,13 @@ public class PlayerMove : MonoBehaviour
 
     public float punchRange;
     public int punchDamage = 10;
-    public int playerHP;
-    public int playerMaxHP;
 
     public bool run;
     private bool isGround = false;
     public bool isJump = false;
     public bool inputAllow = true;
     public bool isDead = false;
+    public bool isCursor = true;
 
     public LayerMask layer;
 
@@ -64,8 +63,6 @@ public class PlayerMove : MonoBehaviour
         rotSpeed = 20f;
 
         punchRange = 0.5f;
-        playerHP = 10;
-        playerMaxHP = 30;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -143,6 +140,28 @@ public class PlayerMove : MonoBehaviour
             equippedSword.SetActive(true);
         }
 
+        // 화면회전 토글
+        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            gameManager.canScreenRotate = !gameManager.canScreenRotate;
+        }
+        // 커서 토글
+        if(Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            isCursor=!isCursor;
+            if(isCursor)
+            {
+                //커서 안보이게
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+
     }
 
     private void FixedUpdate()
@@ -183,15 +202,17 @@ public class PlayerMove : MonoBehaviour
     {
         RaycastHit hit;
 
-        // 발밑 0.2위에서 밑으로 0.201거리만큼 안에 Ground 레이어마스크 있는지
-        if (Physics.Raycast(transform.position + (Vector3.up *0.2f),
-            Vector3.down,out hit,0.201f,layer))
+        //if (Physics.Raycast(transform.position + (Vector3.up *0.2f),
+        //    Vector3.down,out hit,0.21f,layer))
+
+        // 발밑으로 구를 던저서 안에 Ground 레이어마스크 있는지
+        if (Physics.SphereCast(transform.position + (Vector3.up * 0.2f), 0.15f,
+            Vector3.down, out hit, 0.1f, layer))
         {
             isGround = true;
         }
         else
         {
-            isGround = false;
         }
     }
 
@@ -199,14 +220,22 @@ public class PlayerMove : MonoBehaviour
     {
         Vector3 jumpPower = Vector3.up * jumpHeight;
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
-
+        
     }
         
     public void DamageAction(int attackPower)
     {
-        playerHP -= attackPower;
-        print(playerHP);
-        if (playerHP <= 0)
+        if(gameManager.playerHP - attackPower <0)
+        {
+            gameManager.playerHP = 0;
+        }
+        else
+        {
+            gameManager.playerHP -= attackPower;
+        }
+        print(gameManager.playerHP);
+
+        if (gameManager.playerHP <= 0)
         {
             if(!isDead)
             {

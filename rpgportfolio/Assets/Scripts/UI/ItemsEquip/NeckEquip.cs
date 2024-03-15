@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class NeckEquip : MonoBehaviour, IPointerClickHandler
+public class NeckEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     float interval = 0.25f;
     float doubleClickedTime = -1.0f;
@@ -16,9 +16,11 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
     PlayerMove playermoveScript;
 
     GameManager gameManager;
-    public Image instantiateImageAtInven;
+    public Image instantiateImageAtEquipWindow;
     Image instanceImage;
 
+    [SerializeField] Image toolTipImage;
+    GameObject priorityImage;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -26,6 +28,7 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
         neck = playermoveScript.equippedNeck;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        priorityImage = transform.parent.gameObject;
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -39,6 +42,8 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
             if (neck.activeSelf)
             {
                 neck.SetActive(false);
+
+                gameManager.armorPower -= 5;
                 if (instanceImage)
                 {
                     Destroy(instanceImage);
@@ -48,7 +53,10 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
             else
             {
                 neck.SetActive(true);
-                instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.neckEquip.transform);
+                gameManager.armorPower += 5;
+                // 장비창에 아이템 이미지 생성
+                toolTipImage.gameObject.SetActive(false);
+                instanceImage = Instantiate<Image>(instantiateImageAtEquipWindow, gameManager.neckEquip.transform);
 
             }
         }
@@ -57,5 +65,17 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = false;
             doubleClickedTime = Time.time;
         }
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        toolTipImage.gameObject.SetActive(true);
+        // 이미지가 hierarchy 가장밑으로가서 보이도록
+        priorityImage.transform.SetAsLastSibling();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        toolTipImage.gameObject.SetActive(false);
+
     }
 }

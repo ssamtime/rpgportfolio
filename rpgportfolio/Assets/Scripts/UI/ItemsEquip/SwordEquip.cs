@@ -15,15 +15,16 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     PlayerMove playermoveScript;
 
     GameManager gameManager;
-    public Image instantiateImageAtInven;
+    public Image instantiateImageAtEquipWindow;
     Image instanceImage;
 
-    public Image purchaseWindow;
-    public Image sellConfirmWindow;
-    [SerializeField] string sellItemName;
-    [SerializeField] int sellItemPrice;
+    //public Image purchaseWindow;
+    //public Image sellConfirmWindow;
+    //[SerializeField] string sellItemName;
+    //[SerializeField] int sellItemPrice;
 
-    [SerializeField] Image toolTipImage;
+    [SerializeField] Image toolTipImage;    
+    GameObject priorityImage;
 
     void Start()
     {
@@ -33,7 +34,7 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        toolTipImage = gameManager.swordToolTipImage;
+        priorityImage = transform.parent.gameObject;
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -59,17 +60,23 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             {
                 sword.SetActive(false);
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
-                //if (instanceImage)
-                //{
-                //    Destroy(instanceImage); 지우면댐
-                //}
-
+                gameManager.attackPower -= 30;
+                // 장비창에 아이템 이미지 삭제
+                if (instanceImage)
+                {
+                    Destroy(instanceImage);
+                }
             }
             else
             {
                 sword.SetActive(true);
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
-                //instanceImage = Instantiate<Image>(instantiateImageAtInven, gameManager.swordEquip.transform);
+                gameManager.attackPower += 30;
+
+                // 장비창에 아이템 이미지 생성
+                toolTipImage.gameObject.SetActive(false);
+                instanceImage = Instantiate<Image>(instantiateImageAtEquipWindow, gameManager.swordEquip.transform);
+
             }
         }
         else
@@ -82,6 +89,8 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         toolTipImage.gameObject.SetActive(true);
+        // 이미지가 hierarchy 가장밑으로가서 보이도록
+        priorityImage.transform.SetAsLastSibling();
     }
 
     public void OnPointerExit(PointerEventData eventData)
