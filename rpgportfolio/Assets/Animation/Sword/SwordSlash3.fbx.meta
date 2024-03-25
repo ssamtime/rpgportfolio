@@ -69,7 +69,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5766234
+      - time: 0.54533577
         functionName: SwordDamageEvent
         data: 
         objectReferenceParameter: {instanceID: 0}

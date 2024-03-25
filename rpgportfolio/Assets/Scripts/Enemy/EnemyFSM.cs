@@ -36,8 +36,8 @@ public class EnemyFSM : MonoBehaviour
     public float attackRange;    // 공격범위    
     Vector3 originPos;           // 초기 위치 저장    
 
-    int hp;
-    int maxHp;
+    public int hp;
+    public int maxHp;
     bool isAttack = false;
     bool isDeadAnim = false;
     int playerHP;
@@ -47,7 +47,14 @@ public class EnemyFSM : MonoBehaviour
 
     GameManager gameManager;
 
-    private void Start()
+    [SerializeField] GameObject levelUpEffectPrefab;
+    [SerializeField] GameObject levelUpTextPrefab;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip orcDamaged;
+    [SerializeField] AudioClip orcDead;
+
+    private void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -72,21 +79,21 @@ public class EnemyFSM : MonoBehaviour
         currentTime = 0;
         attackDelay = 2.0f;
         attackPower = 30;
-        attackRange = 2.5f; //3f로할가나
+        attackRange = 2.5f; 
 
-        hp = 50;
+        hp = 100;
         maxHp = 100;
         playerHP = gameManager.playerHP;
 
         waypointIndex = 0;
 
+        audioSource = GetComponent<AudioSource>();
 
     }
     
 
     private void Update()
-    {
-        
+    {        
         switch (m_State)
         {
             case EnemyState.Idle:
@@ -102,7 +109,7 @@ public class EnemyFSM : MonoBehaviour
                 Return();
                 break;
             case EnemyState.Damaged:
-                Damaged();
+                //Damaged();
                 break;
             case EnemyState.Dead:
                 Dead();
@@ -295,9 +302,22 @@ public class EnemyFSM : MonoBehaviour
         StartCoroutine(DamageProcess());
     }
 
+    // 데미지 처리용 코루틴 함수
+    IEnumerator DamageProcess()
+    {
+        audioSource.PlayOneShot(orcDamaged);
+        // 0.5초가 경과하면 이동 상태로 전환한다
+        yield return new WaitForSeconds(0.5f);
+        m_State = EnemyState.Move;
+        print("상태 전환 : Damaged -> Move");
+        _animator.SetBool("Idle", false);
+        _animator.SetBool("Attack", false);
+        _animator.SetBool("Walk", true);
+    }
+
     // 사망 상태
     void Dead()
-    {     
+    {
         // 사망 상태를 처리하기 위한 코루틴을 실행한다
         StartCoroutine(DeadProcess());
 
@@ -311,31 +331,41 @@ public class EnemyFSM : MonoBehaviour
         // 한번만실행
         if (!isDeadAnim)
         {
+            audioSource.PlayOneShot(orcDead);
+            gameObject.GetComponent<Collider>().enabled = false;
+            agent.speed = 0f;
             isDeadAnim = true;
 
             _animator.SetBool("Idle", false);
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", false);
             _animator.Play("Die", -1, 0f);
+
+            // 경험치 휙득
+            gameManager.playerEXP += 100;
+            if(gameManager.playerEXP >= gameManager.playerMaxEXP)
+            {
+                gameManager.canStatUpClick += 1;
+                gameManager.playerLevel += 1;
+                gameManager.playerEXP -= gameManager.playerMaxEXP;
+                gameManager.playerMaxEXP = gameManager.playerMaxEXP * 1.2f;
+                gameManager.playerHP = gameManager.playerMaxHP;
+                gameManager.playerMP = gameManager.playerMaxMP;
+                // 레벨업 효과 생성
+                GameObject levelUpEffect = Instantiate<GameObject>(levelUpEffectPrefab, player.transform);
+                Destroy(levelUpEffect, 4f);
+                GameObject levelUpText = Instantiate<GameObject>(levelUpTextPrefab, player.transform);
+                levelUpText.transform.Translate(Vector3.up);
+                Destroy(levelUpText, 4f);
+            }
             
             // 5초 후 자기자신을 제거한다
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(3.0f);
             print("소멸!");
             Destroy(gameObject);
         }
     }
 
-    // 데미지 처리용 코루틴 함수
-    IEnumerator DamageProcess()
-    {
-        // 0.5초가 경과하면 이동 상태로 전환한다
-        yield return new WaitForSeconds(0.5f);
-        m_State = EnemyState.Move;
-        print("상태 전환 : Damaged -> Move");
-        _animator.SetBool("Idle", false);
-        _animator.SetBool("Attack", false);
-        _animator.SetBool("Walk", true);
-    }
 
     // 데미지 처리 실행용 함수
     public void HitEnemy(int hitPower)
@@ -348,8 +378,9 @@ public class EnemyFSM : MonoBehaviour
             return;
         }
 
+
         // 플레이어의 공격력만큼 적의 체력을 감소시킨다
-        if(hp-hitPower < 0)
+        if (hp-hitPower < 0)
         {
             hp = 0;
         }
@@ -395,7 +426,14 @@ public class EnemyFSM : MonoBehaviour
             if (playerMoveScript != null)
             {
                 transform.LookAt(hit2.transform);
-                playerMoveScript.DamageAction(attackPower);
+                if(attackPower - gameManager.armorPower>=1)
+                {
+                    playerMoveScript.DamageAction(attackPower - gameManager.armorPower);
+                }
+                else
+                {
+                    playerMoveScript.DamageAction(1);
+                }
             }
         }
     }

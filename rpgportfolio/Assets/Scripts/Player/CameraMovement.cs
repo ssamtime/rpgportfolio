@@ -7,9 +7,9 @@ public class CameraMovement : MonoBehaviour
     public Transform objectTofollow;
     public float followspeed =10f;
     public float sensitivity = 100f;
-    public float maxClampAngle = 70f;
-    public float minClampAngle = -10f;
-    private float rotX;
+    public float maxClampAngle;
+    public float minClampAngle;
+    public float rotX;
     private float rotY;
     public Transform realCamera;
     public Vector3 dirNormalized;
@@ -22,6 +22,7 @@ public class CameraMovement : MonoBehaviour
     public Vector3 cameraPos = new Vector3(0, 3, -3);
 
     GameManager gameManager;
+    GameObject player;
 
     void Start()
     {
@@ -32,10 +33,28 @@ public class CameraMovement : MonoBehaviour
         finalDistance = realCamera.localPosition.magnitude;
 
         maxDistance = 5f;
+        minClampAngle = 0f;
+        maxClampAngle = 70f;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
 
+        player = GameObject.FindWithTag("Player");
+
+        //objectTofollow = player.transform;
+    }
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<GameManager>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            //destroy(this)?
+        }
+    }
 
     void Update()
     {

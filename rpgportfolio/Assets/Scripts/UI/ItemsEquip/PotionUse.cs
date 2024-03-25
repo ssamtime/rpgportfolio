@@ -13,6 +13,7 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
 
     GameManager gameManager;
+    GameObject player;
 
 
     [SerializeField] Image toolTipImage;
@@ -23,8 +24,11 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     int redPotionRecoverAmount;
     int bluePotionRecoverAmount;
 
+    [SerializeField] GameObject healingEffectPrefab;
+
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         priorityImage = transform.parent.gameObject;
         redPotionRecoverAmount = 50;
@@ -39,56 +43,9 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
 
-            //-------- 더블클릭시 실행되는 내용
+            // 더블클릭시 실행되는 내용
+            UsePotion();
 
-            if(potiontype==1)
-            {
-                gameManager.useItemAmountArray[1]--;
-                if (gameManager.useItemAmountArray[1] == 0)
-                {
-                    Destroy(gameObject);
-                    // index 빈곳 저장해서 거기먼저 채우도록,,
-                }
-                if (gameManager.playerHP + redPotionRecoverAmount> gameManager.playerMaxHP)
-                {
-                    gameManager.playerHP = gameManager.playerMaxHP;
-                }
-                else
-                {
-                    gameManager.playerHP += redPotionRecoverAmount;
-                }
-            }
-            else if(potiontype==2) 
-            {
-                gameManager.useItemAmountArray[2]--;
-                if (gameManager.useItemAmountArray[2] == 0)
-                {
-                    Destroy(gameObject);
-                    // index 빈곳 저장해서 거기먼저 채우도록,,
-                }
-                if (gameManager.playerMP + bluePotionRecoverAmount > gameManager.playerMaxMP)
-                {
-                    gameManager.playerMP = gameManager.playerMaxMP;
-                }
-                else
-                {
-                    gameManager.playerMP += bluePotionRecoverAmount;
-                }
-            }
-            else if(potiontype ==3)
-            {
-                gameManager.useItemAmountArray[3]--;
-                if (gameManager.useItemAmountArray[3] == 0)
-                {
-                    Destroy(gameObject);
-                    // index 빈곳 저장해서 거기먼저 채우도록,,
-                }
-
-                gameManager.playerHP = gameManager.playerMaxHP;
-                gameManager.playerMP = gameManager.playerMaxMP;
-            }
-
-            //-------------
         }
         else
         {
@@ -99,14 +56,64 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        toolTipImage.gameObject.SetActive(true);
         // 이미지가 hierarchy 가장밑으로가서 보이도록
+        priorityImage = transform.parent.gameObject;
         priorityImage.transform.SetAsLastSibling();
+        toolTipImage.gameObject.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         toolTipImage.gameObject.SetActive(false);
 
+    }
+
+    public void UsePotion()
+    {
+        GameObject healingFX = Instantiate<GameObject>(healingEffectPrefab, player.transform);
+        Destroy(healingFX, 2f);
+        if (potiontype == 1)
+        {
+            gameManager.useItemAmountArray[1]--;
+            if (gameManager.useItemAmountArray[1] == 0)
+            {
+                Destroy(gameObject);
+            }
+            if (gameManager.playerHP + redPotionRecoverAmount > gameManager.playerMaxHP)
+            {
+                gameManager.playerHP = gameManager.playerMaxHP;
+            }
+            else
+            {
+                gameManager.playerHP += redPotionRecoverAmount;
+            }
+        }
+        else if (potiontype == 2)
+        {
+            gameManager.useItemAmountArray[2]--;
+            if (gameManager.useItemAmountArray[2] == 0)
+            {
+                Destroy(gameObject);
+            }
+            if (gameManager.playerMP + bluePotionRecoverAmount > gameManager.playerMaxMP)
+            {
+                gameManager.playerMP = gameManager.playerMaxMP;
+            }
+            else
+            {
+                gameManager.playerMP += bluePotionRecoverAmount;
+            }
+        }
+        else if (potiontype == 3)
+        {
+            gameManager.useItemAmountArray[3]--;
+            if (gameManager.useItemAmountArray[3] == 0)
+            {
+                Destroy(gameObject);
+            }
+
+            gameManager.playerHP = gameManager.playerMaxHP;
+            gameManager.playerMP = gameManager.playerMaxMP;
+        }
     }
 }

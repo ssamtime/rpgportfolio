@@ -22,6 +22,8 @@ public class BootsEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] Image toolTipImage;
     GameObject priorityImage;
 
+    AudioSource audioSource;
+    [SerializeField] AudioClip EquipAC;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -30,6 +32,7 @@ public class BootsEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         priorityImage = transform.parent.gameObject;
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
     public void OnPointerClick(PointerEventData eData)
@@ -59,6 +62,7 @@ public class BootsEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 toolTipImage.gameObject.SetActive(false);
                 instanceImage = Instantiate<Image>(instantiateImageAtEquipWindow, gameManager.bootsEquip.transform);
 
+                audioSource.PlayOneShot(EquipAC);
             }
         }
         else
@@ -69,9 +73,10 @@ public class BootsEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        toolTipImage.gameObject.SetActive(true);
         // 이미지가 hierarchy 가장밑으로가서 보이도록
+        priorityImage = transform.parent.gameObject;
         priorityImage.transform.SetAsLastSibling();
+        toolTipImage.gameObject.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)

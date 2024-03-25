@@ -3,7 +3,10 @@ guid: 455c41f698e9d4f488228e6a3143520c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - toolTipImage: {instanceID: 0}
+  - healingEffectPrefab: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

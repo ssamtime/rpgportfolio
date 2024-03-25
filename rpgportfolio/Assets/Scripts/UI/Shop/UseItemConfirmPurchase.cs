@@ -9,6 +9,10 @@ public class UseItemConfirmPurchase : MonoBehaviour
 
     public Image useItemConfirmWindow;
 
+    public Image[] Inventroyslots;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip sellSoundAC;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -37,10 +41,17 @@ public class UseItemConfirmPurchase : MonoBehaviour
             {
                 gameManager.useItemAmountArray[gameManager.useItemIndex] += 1;
 
-                gameManager.inventorySlotList.Add(gameManager.listIndex);
-                Instantiate<Image>(gameManager.instantiateImageAtInven, gameManager.InventorySlots[gameManager.listIndex].transform);
-                gameManager.listIndex++;
+                int i = 0;
+                while (true)
+                {
+                    if (Inventroyslots[i].transform.childCount == 1)
+                        break;
+                    i++;
+                }
+                Instantiate<Image>(gameManager.instantiateImageAtInven,
+                    Inventroyslots[i].transform);
 
+                audioSource.PlayOneShot(sellSoundAC);
                 gameManager.haveMoney -= gameManager.itemPrice;
             }
             else if(gameManager.useItemAmountArray[gameManager.useItemIndex] > 0)

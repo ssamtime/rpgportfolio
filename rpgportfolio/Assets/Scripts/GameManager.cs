@@ -7,8 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public Image[] InventorySlots;
 
-    public List<int> inventorySlotList = new List<int>();
-    public int listIndex;
     public int haveMoney;
 
     public bool blockClick;
@@ -37,44 +35,70 @@ public class GameManager : MonoBehaviour
     public int playerMaxHP;
     public int playerMP;
     public int playerMaxMP;
+    public float playerEXP;
+    public float playerMaxEXP;
+    public int playerLevel;
 
     public int attackPower;
     public int armorPower;
+    public int canStatUpClick;
         
     public int useItemIndex;
     public int[] useItemAmountArray;
 
     public bool merchantNPCturn;
     public bool blackSmithNPCturn;
+    public bool sceneNPCturn;
 
     public bool canScreenRotate;
+
+    public GameObject beginDraggedIcon;
+    public Vector3 startPosition;
+    public Transform startParent;
+
+    public bool thirdFloorIn;
 
     void Start()
     {
         blockClick = false;
-        haveMoney = 500;
-        listIndex = 0;
+        haveMoney = 600;
 
         playerHP = 100;
         playerMaxHP = 100;
         playerMP = 100;
         playerMaxMP = 100;
+        playerEXP=0;
+        playerMaxEXP = 0;
+        playerMaxEXP = 100;
+        playerLevel = 1;
 
         attackPower = 10;
         armorPower = 0;
+        canStatUpClick = 0;
 
         canScreenRotate = true;
 
-        
         useItemAmountArray = new int[10];
         useItemAmountArray[1] = 0;
         useItemAmountArray[2] = 0;
         useItemAmountArray[3] = 0;
-        //useItemAmountArray[1] == redPotionAmount; 
-        //useItemAmountArray[2] == bluePotionAmount;
-        //useItemAmountArray[3] == ElixirAmount;    
-    }
 
+        thirdFloorIn = false;
+    }
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<GameManager>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            //destroy(this)?
+        }
+    
+    }
     void Update()
     {
         haveMoneyText.text=haveMoney.ToString();

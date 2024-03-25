@@ -17,10 +17,19 @@ public class PlayerEventFunction : MonoBehaviour
     PlayerMove _PlayerMoveScript;
     Rigidbody _PlayerRigidbody;
     
+    [SerializeField] GameObject DamageEffectPrefab;
+
+    GameManager gameManager;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip playerPunchAC;
+    [SerializeField] AudioClip playerSwordHitAC;
+    [SerializeField] AudioClip playerPunchAirAC;
+    [SerializeField] AudioClip playerSwordAirAC;
 
     void Start()
     {
-        punchRange = 0.5f;
+        punchRange = 0.8f;
         punchDamage = 10;
         swordRange = 1.6f;
         swordDamage = 40;
@@ -28,6 +37,8 @@ public class PlayerEventFunction : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         _PlayerMoveScript = player.GetComponent<PlayerMove>();
         _PlayerRigidbody = player.GetComponent<Rigidbody>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
     void Update()
@@ -39,34 +50,64 @@ public class PlayerEventFunction : MonoBehaviour
     {
         // 적 탐지
         RaycastHit hit2;
-        // 플레이어 주먹위치에서 레이 발사
+        // 플레이어 주먹위치에서 구 발사
+        audioSource.PlayOneShot(playerPunchAirAC, 0.4f);
 
-        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
-            transform.forward, out hit2, punchRange))
+        if (Physics.SphereCast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
+            0.2f,transform.forward, out hit2, punchRange))
         {
-            EnemyFSM enemyFSM = hit2.collider.GetComponent<EnemyFSM>();
-            if (enemyFSM != null)
+            if (hit2.collider.tag == "Enemy")
             {
                 transform.LookAt(hit2.transform);
-                enemyFSM.HitEnemy(punchDamage);
+                GameObject hitEffect = Instantiate<GameObject>(DamageEffectPrefab,
+                    hit2.collider.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
+                Destroy(hitEffect, 2f);
+                audioSource.PlayOneShot(playerPunchAC);
             }
+
+            EnemyFSM enemyFSM1 = hit2.collider.GetComponent<EnemyFSM>();
+            RedDragonFSM enemyFSM2 = hit2.collider.GetComponent<RedDragonFSM>();
+            DarkBlueFSM enemyFSM3 = hit2.collider.GetComponent<DarkBlueFSM>();
+            if (enemyFSM1 != null)
+                enemyFSM1.HitEnemy(gameManager.attackPower);
+            else if (enemyFSM2 != null)
+                enemyFSM2.HitEnemy(gameManager.attackPower);
+            else if (enemyFSM3 != null)
+                enemyFSM3.HitEnemy(gameManager.attackPower);
         }
     }
     public void SwordDamageEvent()
     {
         // 적 탐지
-        RaycastHit hit2;
-        // 플레이어 주먹위치에서 레이 발사
+        RaycastHit[] hits;
+        // 플레이어 앞위치에서 구 발사
+        audioSource.PlayOneShot(playerSwordAirAC);
 
-        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
-            transform.forward, out hit2, swordRange))
+        hits = Physics.SphereCastAll(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
+            0.7f, transform.forward, swordRange);
+
+        
+        foreach (RaycastHit colliderHit in hits)
         {
-            EnemyFSM enemyFSM = hit2.collider.GetComponent<EnemyFSM>();
-            if (enemyFSM != null)
+            if (colliderHit.collider.tag == "Enemy")
             {
-                transform.LookAt(hit2.transform);
-                enemyFSM.HitEnemy(swordDamage);
-            }
+                transform.LookAt(colliderHit.collider.transform.position);
+                Debug.Log("검이펙트잇는부분실행");
+                GameObject hitEffect = Instantiate<GameObject>(DamageEffectPrefab,
+                    colliderHit.collider.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
+                Destroy(hitEffect, 2f);
+                audioSource.PlayOneShot(playerSwordHitAC);
+            }                
+                        
+            EnemyFSM enemyFSM1 = colliderHit.collider.GetComponent<EnemyFSM>();
+            RedDragonFSM enemyFSM2 = colliderHit.collider.GetComponent<RedDragonFSM>();
+            DarkBlueFSM enemyFSM3 = colliderHit.collider.GetComponent<DarkBlueFSM>();
+            if (enemyFSM1 != null)
+                enemyFSM1.HitEnemy(gameManager.attackPower);
+            else if (enemyFSM2 != null)
+                enemyFSM2.HitEnemy(gameManager.attackPower);
+            else if (enemyFSM3 != null)
+                enemyFSM3.HitEnemy(gameManager.attackPower);
         }
     }
 

@@ -47,9 +47,17 @@ public class PlayerMove : MonoBehaviour
 
     GameManager gameManager;
 
-    public Image equipWindow;
     public Image inventoryWindow;
-    public Image shopWindow;
+    public Image equipWindow;
+
+    [SerializeField] GameObject fireBallPrefab;
+    [SerializeField] GameObject iceRangePrefab;
+
+    AudioSource audioSource;
+    [SerializeField] AudioClip playerDamagedAC;
+    [SerializeField] AudioClip playerJumpAC;
+    [SerializeField] AudioClip fireBallAC;
+    [SerializeField] AudioClip iceRangeAC;
 
     void Start()
     {
@@ -62,11 +70,25 @@ public class PlayerMove : MonoBehaviour
         jumpHeight = 4f;
         rotSpeed = 20f;
 
-        punchRange = 0.5f;
+        punchRange = 0.8f;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        audioSource = GetComponent<AudioSource>();
     }
+    private void Awake()
+    {
+        var obj = FindObjectsOfType<PlayerMove>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Update()
     {
@@ -75,18 +97,17 @@ public class PlayerMove : MonoBehaviour
         CheckGround();
         if (Input.GetButtonDown("Jump") && isGround && !isJump &&inputAllow) 
         {
-            Jump();
-            isJump=true;
+            Vector3 jumpPower = Vector3.up * jumpHeight;
+            GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+            isJump =true;
             _animator.SetTrigger("Jump");
+            audioSource.PlayOneShot(playerJumpAC);
         }
 
-        if(Input.GetMouseButtonDown(0)) 
+        if (Input.GetMouseButtonDown(0)) 
         {
             // ui 창이 켜져있거나 npc 위에 커서있으면 공격 안됨
-            if(!(equipWindow.gameObject.activeSelf||
-                inventoryWindow.gameObject.activeSelf||
-                shopWindow.gameObject.activeSelf||
-                gameManager.blockClick))
+            if(!gameManager.blockClick)
             {
                 _animator.SetTrigger("Punch");
             }
@@ -104,13 +125,17 @@ public class PlayerMove : MonoBehaviour
         // i누르면 인벤토리 on,off
         if(Input.GetKeyDown(KeyCode.I)) 
         {
-            if(inventoryWindow.gameObject.activeSelf) 
+            if (inventoryWindow.gameObject.activeSelf) 
             {
                 inventoryWindow.gameObject.SetActive(false);
+                gameManager.canScreenRotate = true;
+                gameManager.blockClick = false;
             }
             else 
             {
                 inventoryWindow.gameObject.SetActive(true);
+                gameManager.canScreenRotate = false;
+                gameManager.blockClick = true;
             }
         }
 
@@ -120,28 +145,19 @@ public class PlayerMove : MonoBehaviour
             if (equipWindow.gameObject.activeSelf)
             {
                 equipWindow.gameObject.SetActive(false);
+                gameManager.canScreenRotate = true;
+                gameManager.blockClick = false;
             }
             else
             {
                 equipWindow.gameObject.SetActive(true);
+                gameManager.canScreenRotate = false;
+                gameManager.blockClick = true;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            _animator.runtimeAnimatorController= originalOverrideAnimator;
-            equippedShield.SetActive(false);
-            equippedSword.SetActive(false);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            _animator.runtimeAnimatorController = swordOverrideAnimator;
-            equippedShield.SetActive(true);
-            equippedSword.SetActive(true);
-        }
-
         // 화면회전 토글
-        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             gameManager.canScreenRotate = !gameManager.canScreenRotate;
         }
@@ -216,13 +232,25 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    void Jump()
+    public void InstantiateFireBall()
     {
-        Vector3 jumpPower = Vector3.up * jumpHeight;
-        GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
-        
+        // 플레이어 파이어볼쏘는 애니메이션
+        _animator.SetTrigger("FireBall");
+
+        // 플레이어 앞에서 파이어볼 생성
+        Instantiate<GameObject>(fireBallPrefab, transform.position + new Vector3(0, 1.3f, 0), Quaternion.identity);
+        audioSource.PlayOneShot(fireBallAC);
     }
-        
+    public void InstantiateIceRange()
+    {
+        // 플레이어 얼음범위공격시전 애니메이션
+        _animator.SetTrigger("IceRange");
+
+        // 플레이어 앞에서 얼음범위공격 생성
+        Instantiate<GameObject>(iceRangePrefab, transform);
+        audioSource.PlayOneShot(iceRangeAC);
+    }
+
     public void DamageAction(int attackPower)
     {
         if(gameManager.playerHP - attackPower <0)
@@ -234,6 +262,7 @@ public class PlayerMove : MonoBehaviour
             gameManager.playerHP -= attackPower;
         }
         print(gameManager.playerHP);
+        audioSource.PlayOneShot(playerDamagedAC);
 
         if (gameManager.playerHP <= 0)
         {
