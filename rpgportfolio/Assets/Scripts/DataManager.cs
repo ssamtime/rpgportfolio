@@ -121,6 +121,7 @@ public class DataManager : MonoBehaviour
 
     public void LoadData()
     {
+        print("불러오기");
         if (File.Exists(savePath + saveFileName) == false)
         {
             print("저장된 데이터가 없습니다");

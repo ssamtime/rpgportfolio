@@ -34,7 +34,6 @@ public class UseItemPurchase : MonoBehaviour, IPointerClickHandler
         {
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
-
             //Debug.Log("¥ı∫Ì≈¨∏Ø¥Ô");
 
             gameManager.itemPrice = price;
