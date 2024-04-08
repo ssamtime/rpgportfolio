@@ -13,6 +13,7 @@ public class WindowBlockClick : MonoBehaviour
     [SerializeField] Image EquipWindow;
     [SerializeField] Image Inventory;
     [SerializeField] Image MoveToDungeon;
+    [SerializeField] Image optionWindow;
 
     void Start()
     {
@@ -26,9 +27,12 @@ public class WindowBlockClick : MonoBehaviour
             PotionShopWindow.gameObject.activeSelf == true ||
             EquipWindow.gameObject.activeSelf == true ||
             Inventory.gameObject.activeSelf == true ||
-            MoveToDungeon.gameObject.activeSelf == true) 
+            MoveToDungeon.gameObject.activeSelf == true ||
+            optionWindow.gameObject.activeSelf == true) 
         { 
             gameManager.blockClick=true;
+            gameManager.canScreenRotate = false;
         }
+
     }
 }

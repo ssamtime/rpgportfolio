@@ -240,7 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf14db85528cb2247981c1155f3b7b60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  droppedSlot: {fileID: 0}
 --- !u!225 &432141322599906017
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -262,7 +261,8 @@ AudioSource:
   m_GameObject: {fileID: 5482835620516388228}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 311955616101414452, guid: a1f26987e2586174c8835f295038a842,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
