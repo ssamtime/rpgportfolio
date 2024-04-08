@@ -89,7 +89,6 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         if(isDead) return;

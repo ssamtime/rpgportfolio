@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 1476409031437113836}
   - component: {fileID: 432141322599906017}
   - component: {fileID: -4912788997326245235}
+  - component: {fileID: 868882550414318449}
   m_Layer: 5
   m_Name: Image_Shoulder
   m_TagString: Untagged
@@ -226,6 +227,7 @@ MonoBehaviour:
   instantiateImageAtEquipWindow: {fileID: 2962810814857526182}
   toolTipImage: {fileID: 6919701989473067973}
   EquipAC: {fileID: 8300000, guid: 94c4aca445468644cbeeb7f93759fe4a, type: 3}
+  slotNumber: 0
 --- !u!114 &1476409031437113836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +349,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &868882550414318449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5482835620516388228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5661a95331e53488ce34c1cc297179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: -1
 --- !u!1 &6442534617627416296
 GameObject:
   m_ObjectHideFlags: 0

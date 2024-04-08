@@ -61,9 +61,9 @@ public class NumberKeyUse : MonoBehaviour
         {
             iceRangeObjectTransform.GetComponent <IceRangeSkillUse>().UseIceRange();
         }
-        else if( (potionObjectTransform = image.transform.Find("Image_RedPotion(Clone)")) ||
-            (potionObjectTransform = image.transform.Find("Image_BluePotion(Clone)"))||
-            (potionObjectTransform = image.transform.Find("Image_Elixir(Clone)"))
+        else if( (potionObjectTransform = image.transform.Find("Image_RedPotion(Clone)(Clone)")) ||
+            (potionObjectTransform = image.transform.Find("Image_BluePotion(Clone)(Clone)"))||
+            (potionObjectTransform = image.transform.Find("Image_Elixir(Clone)(Clone)"))
             )
         {
             potionObjectTransform.GetComponent<PotionUse>().UsePotion();

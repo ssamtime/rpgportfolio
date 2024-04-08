@@ -72,14 +72,14 @@ public class DarkBlueFSM : MonoBehaviour
         originPos = transform.position;
 
         findDistance = 7.0f;
-        attackDistance = 2f;    //다르게해줘야
+        attackDistance = 2.2f;    //다르게해줘야
         moveSpeed = 3.0f;
         moveDistance = 20.0f;
         rotationSpeed = 15.0f;
         currentTime = 0;
         attackDelay = 4.0f;     //다르게해줘야
         attackPower = 30;
-        attackRange = 2.5f;
+        attackRange = 2.2f;
 
         hp = 150;
         maxHp = 150;

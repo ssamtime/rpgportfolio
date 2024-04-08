@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 4959114986532693346}
   - component: {fileID: -8849098232890523713}
   - component: {fileID: -1335373753243562355}
+  - component: {fileID: 5536643040201826474}
   m_Layer: 5
   m_Name: Image_Neck
   m_TagString: Untagged
@@ -384,6 +385,7 @@ MonoBehaviour:
   instantiateImageAtEquipWindow: {fileID: 1713556678152308183}
   toolTipImage: {fileID: 4085355734130156734}
   EquipAC: {fileID: 8300000, guid: 94c4aca445468644cbeeb7f93759fe4a, type: 3}
+  slotNumber: 0
 --- !u!114 &4959114986532693346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,3 +507,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5536643040201826474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5943935871511821121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5661a95331e53488ce34c1cc297179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: -1

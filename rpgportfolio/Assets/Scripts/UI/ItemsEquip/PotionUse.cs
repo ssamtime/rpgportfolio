@@ -25,6 +25,8 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
     int bluePotionRecoverAmount;
 
     [SerializeField] GameObject healingEffectPrefab;
+    public int slotNumber;
+
 
     void Start()
     {
@@ -75,7 +77,7 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
         if (potiontype == 1)
         {
             gameManager.useItemAmountArray[1]--;
-            if (gameManager.useItemAmountArray[1] == 0)
+            if (gameManager.useItemAmountArray[1] <= 0)
             {
                 Destroy(gameObject);
             }
@@ -91,7 +93,7 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
         else if (potiontype == 2)
         {
             gameManager.useItemAmountArray[2]--;
-            if (gameManager.useItemAmountArray[2] == 0)
+            if (gameManager.useItemAmountArray[2] <= 0)
             {
                 Destroy(gameObject);
             }
@@ -107,7 +109,7 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
         else if (potiontype == 3)
         {
             gameManager.useItemAmountArray[3]--;
-            if (gameManager.useItemAmountArray[3] == 0)
+            if (gameManager.useItemAmountArray[3] <= 0)
             {
                 Destroy(gameObject);
             }

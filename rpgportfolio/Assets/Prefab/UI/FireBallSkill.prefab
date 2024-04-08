@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 319363220944851431}
   - component: {fileID: 8603244164012590736}
   - component: {fileID: 3276718806450052000}
+  - component: {fileID: -27004213764365870}
   m_Layer: 5
   m_Name: FireBallSkill
   m_TagString: Untagged
@@ -94,7 +95,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   droppedSlot: {fileID: 0}
-  startParent: {fileID: 0}
 --- !u!225 &8603244164012590736
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -122,6 +122,19 @@ MonoBehaviour:
   toolTipImage: {fileID: 5944729817917978190}
   darkImage: {fileID: 8913358469694330315}
   leftTimeText: {fileID: 4203257412861106194}
+--- !u!114 &-27004213764365870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222361233139974318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5661a95331e53488ce34c1cc297179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: -1
 --- !u!1 &3626218354067695130
 GameObject:
   m_ObjectHideFlags: 0

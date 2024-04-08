@@ -43,6 +43,7 @@ public class UseItemPurchase : MonoBehaviour, IPointerClickHandler
             gameManager.useItemIndex = useItemIndex;
 
             useItemConfirmWindow.gameObject.SetActive(true);
+            useItemConfirmWindow.transform.parent.SetAsLastSibling();
         }
         else
         {

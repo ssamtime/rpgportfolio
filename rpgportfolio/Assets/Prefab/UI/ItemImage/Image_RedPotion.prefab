@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 7662797347579538238}
   - component: {fileID: 9011444410435679890}
   - component: {fileID: 2399057059399230775}
+  - component: {fileID: 7278232384198788755}
   m_Layer: 5
   m_Name: Image_RedPotion
   m_TagString: Untagged
@@ -475,6 +476,7 @@ MonoBehaviour:
   potiontype: 1
   healingEffectPrefab: {fileID: 9017484664307500583, guid: 7d0ff8c8b51a7854fbc29e9c39d30ee8,
     type: 3}
+  slotNumber: 0
 --- !u!114 &9011444410435679890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,6 +502,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7278232384198788755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994039133621075690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5661a95331e53488ce34c1cc297179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: -1
 --- !u!1 &8525570491088378654
 GameObject:
   m_ObjectHideFlags: 0

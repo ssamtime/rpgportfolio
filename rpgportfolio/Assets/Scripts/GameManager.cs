@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,11 +54,15 @@ public class GameManager : MonoBehaviour
     public bool canScreenRotate;
 
     public GameObject beginDraggedIcon;
+    public GameObject discardDraggedIcon;
+    public bool wasQuickSlot;
     public Vector3 startPosition;
     public Transform startParent;
 
     public bool thirdFloorIn;
 
+    public Image discardConfirmWindow;
+    //public string discardItemName;
     void Start()
     {
         blockClick = false;
@@ -78,12 +83,14 @@ public class GameManager : MonoBehaviour
 
         canScreenRotate = true;
 
-        useItemAmountArray = new int[10];
+        useItemAmountArray = new int[15];
         useItemAmountArray[1] = 0;
         useItemAmountArray[2] = 0;
         useItemAmountArray[3] = 0;
 
+        wasQuickSlot = false;
         thirdFloorIn = false;
+        
     }
     private void Awake()
     {
@@ -97,11 +104,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             //destroy(this)?
         }
-    
+
     }
     void Update()
     {
         haveMoneyText.text=haveMoney.ToString();
-
     }
+
 }

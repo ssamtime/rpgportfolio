@@ -28,6 +28,7 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     AudioSource audioSource;
     [SerializeField] AudioClip swordEquipAC;
+    public int slotNumber;
 
     void Start()
     {
@@ -97,6 +98,8 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         // 이미지가 hierarchy 가장밑으로가서 보이도록
         priorityImage = transform.parent.gameObject;
         priorityImage.transform.SetAsLastSibling();
+
+        transform.parent.parent.transform.SetAsLastSibling();
         toolTipImage.gameObject.SetActive(true);
     }
 

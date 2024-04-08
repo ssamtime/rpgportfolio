@@ -41,6 +41,7 @@ public class Purchase : MonoBehaviour, IPointerClickHandler
             gameManager.instantiateImageAtInven = imageToInventory;
 
             confirmWindow.gameObject.SetActive(true);
+            confirmWindow.transform.parent.SetAsLastSibling();
         }
         else
         {

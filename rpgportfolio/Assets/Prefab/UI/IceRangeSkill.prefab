@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 7212176553424860311}
   - component: {fileID: 996905508606529040}
   - component: {fileID: 3347356525635381384}
+  - component: {fileID: 4229706292330736917}
   m_Layer: 5
   m_Name: IceRangeSkill
   m_TagString: Untagged
@@ -170,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 309.36, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6198642492333070228
@@ -251,6 +252,19 @@ MonoBehaviour:
   toolTipImage: {fileID: 2366382261859643127}
   darkImage: {fileID: 7305574797581530190}
   leftTimeText: {fileID: 7519422382513116896}
+--- !u!114 &4229706292330736917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093082474604877690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5661a95331e53488ce34c1cc297179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: -1
 --- !u!1 &1688669155604581668
 GameObject:
   m_ObjectHideFlags: 0

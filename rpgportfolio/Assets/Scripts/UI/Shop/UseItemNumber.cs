@@ -20,5 +20,9 @@ public class UseItemNumber : MonoBehaviour
     void Update()
     {
         useItemAmount.text = gameManager.useItemAmountArray[useItemIndex].ToString();
+
+        // 만약 수량 0이하되면 삭제하기
+        if (gameManager.useItemAmountArray[useItemIndex] <= 0)
+            Destroy(transform.parent.gameObject);
     }
 }

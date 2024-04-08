@@ -7,38 +7,56 @@ using UnityEngine.EventSystems;
 public class SlotInfo : MonoBehaviour, IDropHandler
 {
     GameManager gameManager;
+    
+    [SerializeField] public int slotNumber;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();        
+    }
+    
+    public void OnDrop(PointerEventData eventData)
+    {
+        GameObject OriginIcon = Icon();
+
+        if(gameManager.wasQuickSlot == true)
+        {
+            print("5번실행");
+            // 퀵슬롯 아이콘 삭제
+            Destroy(gameManager.beginDraggedIcon.gameObject);
+            return;
+        }
+
+        // 드랍한 위치에 이미 아이콘이 없다면
+        if (OriginIcon == null)
+        {
+            print("6번실행");
+            gameManager.beginDraggedIcon.transform.SetParent(transform);
+            gameManager.beginDraggedIcon.transform.position = transform.position;
+            // beginDraggedIcon 에 slotnumber 저장하기
+            gameManager.beginDraggedIcon.GetComponent<SlotNumber>().slotNumber = slotNumber;
+        }
+        // 드랍한 위치에 이미 아이콘이 있다면
+        else
+        {
+            print("7번실행");
+            // 원래 있던 이미지를 드래그 시작위치로
+            OriginIcon.transform.parent = gameManager.startParent;
+            OriginIcon.transform.position = gameManager.startPosition;
+            // 드래그한 이미지를 드랍한 위치로
+            gameManager.beginDraggedIcon.transform.SetParent(transform);
+            gameManager.beginDraggedIcon.transform.position = transform.position;
+        }
     }
 
+    // 슬롯에 아이템이 있으면 아이템 반환, 없으면 null 반환
     GameObject Icon()
     {
-        if(transform.childCount > 1)
+        if (transform.childCount > 1)
         {
             return transform.GetChild(1).gameObject;
         }
         else { return null; }
     }
-    public void OnDrop(PointerEventData eventData)
-    {
-        GameObject OriginIcon = Icon();
-        if (OriginIcon == null)
-        {
-            gameManager.beginDraggedIcon.transform.SetParent(transform);
-            gameManager.beginDraggedIcon.transform.position = transform.position;
-        }
-        else
-        {
-            // 원래 있던 이미지의 위치로 이동
-            OriginIcon.transform.parent = gameManager.startParent;
-            OriginIcon.transform.position = gameManager.startPosition;
 
-            gameManager.beginDraggedIcon.transform.SetParent(transform);
-            gameManager.beginDraggedIcon.transform.position = transform.position;
-        }
-    }
-
-    
 }

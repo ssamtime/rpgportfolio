@@ -47,8 +47,14 @@ public class ConfirmPurchase : MonoBehaviour
             Instantiate<Image>(gameManager.instantiateImageAtInven,
                 Inventroyslots[i].transform);
 
-            gameManager.haveMoney -= gameManager.itemPrice;
+            // slotnumber 저장
+            if (gameManager.instantiateImageAtInven.GetComponent<SlotNumber>()!=null)
+                gameManager.instantiateImageAtInven.GetComponent<SlotNumber>().slotNumber = i;
+            else
+                Debug.Log("slotnumber 스크립트 못차즘..");
+
             audioSource.PlayOneShot(sellSoundAC);
+            gameManager.haveMoney -= gameManager.itemPrice;
             confirmWindow.gameObject.SetActive(false);
         }
         else

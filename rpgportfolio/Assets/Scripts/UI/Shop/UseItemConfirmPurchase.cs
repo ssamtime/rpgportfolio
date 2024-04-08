@@ -51,12 +51,20 @@ public class UseItemConfirmPurchase : MonoBehaviour
                 Instantiate<Image>(gameManager.instantiateImageAtInven,
                     Inventroyslots[i].transform);
 
+                // slotnumber 저장
+                if (gameManager.instantiateImageAtInven.GetComponent<SlotNumber>() != null)
+                    gameManager.instantiateImageAtInven.GetComponent<SlotNumber>().slotNumber = i;
+                else
+                    Debug.Log("slotnumber 스크립트 못차즘..");
+
                 audioSource.PlayOneShot(sellSoundAC);
                 gameManager.haveMoney -= gameManager.itemPrice;
             }
             else if(gameManager.useItemAmountArray[gameManager.useItemIndex] > 0)
             {
                 gameManager.useItemAmountArray[gameManager.useItemIndex]+=1;
+
+                audioSource.PlayOneShot(sellSoundAC);
                 gameManager.haveMoney -= gameManager.itemPrice;
             }
 

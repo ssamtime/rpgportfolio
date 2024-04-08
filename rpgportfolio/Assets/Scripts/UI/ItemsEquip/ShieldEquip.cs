@@ -24,6 +24,7 @@ public class ShieldEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     AudioSource audioSource;
     [SerializeField] AudioClip EquipAC;
+    public int slotNumber;
     void Start()
     {
         player = GameObject.FindWithTag("Player");
@@ -76,6 +77,7 @@ public class ShieldEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         // 이미지가 hierarchy 가장밑으로가서 보이도록
         priorityImage = transform.parent.gameObject;
         priorityImage.transform.SetAsLastSibling();
+        transform.parent.parent.transform.SetAsLastSibling();
         toolTipImage.gameObject.SetActive(true);
     }
 
