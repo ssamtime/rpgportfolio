@@ -32,7 +32,7 @@ public class CameraMovement : MonoBehaviour
         dirNormalized = realCamera.localPosition.normalized;
         finalDistance = realCamera.localPosition.magnitude;
 
-        maxDistance = 5f;
+        maxDistance = 10f;
         minClampAngle = 0f;
         maxClampAngle = 70f;
 

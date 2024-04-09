@@ -57,9 +57,17 @@ public class NumberKeyUse : MonoBehaviour
         {
             fireBallObjectTransform.GetComponent<FireBallSkillUse>().UseFireBall();
         }
+        else if (fireBallObjectTransform = image.transform.Find("FireBallSkill(Clone)"))
+        {
+            fireBallObjectTransform.GetComponent<FireBallSkillUse>().UseFireBall();
+        }
         else if(iceRangeObjectTransform = image.transform.Find("IceRangeSkill"))
         {
             iceRangeObjectTransform.GetComponent <IceRangeSkillUse>().UseIceRange();
+        }
+        else if (iceRangeObjectTransform = image.transform.Find("IceRangeSkill(Clone)"))
+        {
+            iceRangeObjectTransform.GetComponent<IceRangeSkillUse>().UseIceRange();
         }
         else if( (potionObjectTransform = image.transform.Find("Image_RedPotion(Clone)(Clone)")) ||
             (potionObjectTransform = image.transform.Find("Image_BluePotion(Clone)(Clone)"))||
@@ -67,7 +75,14 @@ public class NumberKeyUse : MonoBehaviour
             )
         {
             potionObjectTransform.GetComponent<PotionUse>().UsePotion();
-        }        
-            
+        }
+        else if ((potionObjectTransform = image.transform.Find("Image_RedPotion(Clone)")) ||
+            (potionObjectTransform = image.transform.Find("Image_BluePotion(Clone)")) ||
+            (potionObjectTransform = image.transform.Find("Image_Elixir(Clone)"))
+            )
+        {
+            potionObjectTransform.GetComponent<PotionUse>().UsePotion();
+        }
+
     }
 }

@@ -73,7 +73,7 @@ public class RedDragonFSM : MonoBehaviour
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
 
-        findDistance = 15f;
+        findDistance = 30f;
         attackDistance = 4.5f;    //오크랑다름
         moveSpeed = 3.0f;
         moveDistance = 20.0f;
@@ -137,7 +137,6 @@ public class RedDragonFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, player.transform.position) < findDistance
             && gameManager.thirdFloorIn)
         {
-            _animator.SetTrigger("Scream"); 
 
             StartCoroutine(ScreamforSeconds());
         }
@@ -149,7 +148,8 @@ public class RedDragonFSM : MonoBehaviour
     }
     IEnumerator ScreamforSeconds()
     {
-        //yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
+        _animator.SetTrigger("Scream");
         if (!hasScreamed) // 소리를 재생한 적이 없으면 실행
         {
             audioSource.PlayOneShot(redDragonRoarAC);
@@ -340,10 +340,12 @@ public class RedDragonFSM : MonoBehaviour
                 Destroy(levelUpText, 4f);
                 // 레벨업 스탯찍기창 생기기
             }
-
-            // 5초 후 자기자신을 제거한다
-            yield return new WaitForSeconds(4.0f);
+            Time.timeScale = 0.4f;
+            yield return new WaitForSeconds(2.0f);
+            Time.timeScale = 1f;
+            yield return new WaitForSeconds(2.0f);
             print("소멸!");
+            // 자기자신을 제거
             Destroy(gameObject);
         }
     }

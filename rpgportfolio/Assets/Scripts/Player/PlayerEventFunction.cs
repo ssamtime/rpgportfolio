@@ -41,9 +41,6 @@ public class PlayerEventFunction : MonoBehaviour
         audioSource = transform.GetComponent<AudioSource>();
     }
 
-    void Update()
-    {        
-    }
 
     // 주먹내지를때 실행되는 애니메이션 이벤트
     public void PunchDamageEvent()
