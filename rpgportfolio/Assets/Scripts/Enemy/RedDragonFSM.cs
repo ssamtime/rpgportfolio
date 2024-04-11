@@ -56,6 +56,11 @@ public class RedDragonFSM : MonoBehaviour
     [SerializeField] AudioClip redDragonRoarAC;
     bool hasScreamed = false;
 
+    bool hasBasicAttacked = false;
+    [SerializeField] ParticleSystem fireParticle;
+    [SerializeField] ParticleSystem smokeParticle;
+
+
     private void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -223,7 +228,7 @@ public class RedDragonFSM : MonoBehaviour
         }
 
         // 만약 플레이어가 공격 범위 내에 위치하는 경우 플레이어를 공격한다
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance)
+        if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance )
         {
             agent.velocity = Vector3.zero;
             // 플레이어를 바라보도록 회전
@@ -237,11 +242,26 @@ public class RedDragonFSM : MonoBehaviour
             {
                 print("공격");
                 currentTime = 0;
-
                 isAttack = true;
-                _animator.SetBool("Idle", true);
-                _animator.SetBool("Attack", true);
-                _animator.SetBool("Walk", false);
+
+
+                if (hasBasicAttacked == false)
+                {
+                    _animator.SetBool("Idle", true);
+                    _animator.SetBool("Attack", true);
+                    _animator.SetBool("Walk", false);
+                    _animator.SetBool("Fire", false);
+                    hasBasicAttacked = true;
+                }
+                else
+                {
+                    _animator.SetBool("Idle", true);
+                    _animator.SetBool("Attack", false);
+                    _animator.SetBool("Walk", false);
+                    _animator.SetBool("Fire", true);
+                    hasBasicAttacked = false;
+                }
+                    
 
             }
         }
@@ -402,16 +422,6 @@ public class RedDragonFSM : MonoBehaviour
     }
 
     // 공격애니메이션에서 실행되는 이벤트함수
-    public void AttackFinish()
-    {
-        isAttack = false;
-        //agent.Resume();
-        _animator.SetBool("Walk", false);
-        _animator.SetBool("Attack", false);
-        _animator.SetBool("Idle", true);
-    }
-
-    // 공격애니메이션에서 실행되는 이벤트함수
     public void GiveDamage(int damage)
     {
         RaycastHit hit2;
@@ -435,20 +445,22 @@ public class RedDragonFSM : MonoBehaviour
         }
     }
 
-
-    void OnDrawGizmos()
+    // 공격애니메이션에서 실행되는 이벤트함수
+    public void AttackFinish()
     {
-        // 적 탐지
-        RaycastHit hit2;
-        // 플레이어 주먹위치에서 레이 발사
-
-        if (Physics.Raycast(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0),
-            transform.forward, out hit2, attackRange))
-        {
-            // Hit된 지점까지 ray를 그려준다.
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(transform.position + (transform.forward * 0.2f) + new Vector3(0, 1.5f, 0)
-                , transform.forward * attackRange);
-        }
+        isAttack = false;
+        //agent.Resume();
+        _animator.SetBool("Walk", false);
+        _animator.SetBool("Attack", false);
+        _animator.SetBool("Idle", true);
+        _animator.SetBool("Fire", false);
     }
+
+    // 공격애니메이션에서 실행되는 이벤트함수
+    public void fireParticlePlay()
+    {
+        fireParticle.Play();
+        smokeParticle.Play();        
+    }
+
 }

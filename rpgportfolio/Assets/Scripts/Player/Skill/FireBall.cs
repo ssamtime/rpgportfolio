@@ -14,7 +14,7 @@ public class FireBall : MonoBehaviour
     void Start()
     {
         playerFoward = GameObject.FindWithTag("Player").transform.forward;
-        fireBallSpeed = 0.12f;
+        fireBallSpeed = 8f;
         fireBallDamage = 30;
 
         Destroy(gameObject,10f);
@@ -23,7 +23,7 @@ public class FireBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(playerFoward * fireBallSpeed);
+        transform.Translate(playerFoward * fireBallSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
