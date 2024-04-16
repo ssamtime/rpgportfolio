@@ -49,9 +49,9 @@ public class ShoulderEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterH
             {
                 shoulder.SetActive(false);
                 gameManager.armorPower -= 5;
-                if (instanceImage)
+                if (gameManager.shoulderEquip.transform.GetChild(2).gameObject)
                 {
-                    Destroy(instanceImage);
+                    Destroy(gameManager.shoulderEquip.transform.GetChild(2).gameObject);
 
                 }
             }

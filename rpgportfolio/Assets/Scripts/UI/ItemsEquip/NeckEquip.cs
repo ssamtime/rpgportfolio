@@ -49,10 +49,9 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
                 neck.SetActive(false);
 
                 gameManager.armorPower -= 5;
-                if (instanceImage)
+                if (gameManager.neckEquip.transform.GetChild(2))
                 {
-                    Destroy(instanceImage);
-
+                    Destroy(gameManager.neckEquip.transform.GetChild(2).gameObject);
                 }
             }
             else

@@ -49,9 +49,9 @@ public class ShieldEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                 shiled.SetActive(false);
                 gameManager.armorPower -= 5;
                 // 장비창 이미지 삭제
-                if (instanceImage)
+                if (gameManager.shieldEquip.transform.GetChild(2).gameObject)
                 {
-                    Destroy(instanceImage);
+                    Destroy(gameManager.shieldEquip.transform.GetChild(2).gameObject);
 
                 }
             }

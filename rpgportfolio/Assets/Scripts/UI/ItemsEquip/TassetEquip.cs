@@ -49,9 +49,9 @@ public class TassetEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                 tasset.SetActive(false);
                 gameManager.armorPower -= 5;
                 // 장비창 이미지 삭제
-                if (instanceImage)
+                if (gameManager.tassetEquip.transform.GetChild(2).gameObject)
                 {
-                    Destroy(instanceImage);
+                    Destroy(gameManager.tassetEquip.transform.GetChild(2).gameObject);
 
                 }
             }

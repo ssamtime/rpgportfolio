@@ -221,22 +221,35 @@ public class DataManager : MonoBehaviour
         playermoveScript.equippedTasset.SetActive(savedData.isEquippedTasset);
         playermoveScript.equippedBoots.SetActive(savedData.isEquippedBoots);
 
-        // 장비 착용안하고 있으면
+        // 장비 착용안하고 저장데이터가 착용했었더라면 생성
         if (gameManager.swordEquip.transform.childCount == 2 && savedData.isSwordImage)
         {
             Instantiate<GameObject>(swordImagePrefab, gameManager.swordEquip.transform);
             playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
         }
+        // 장비 착용했고 저장데이터가 착용안했더라면 삭제
+        else if(gameManager.swordEquip.transform.childCount == 3 && !savedData.isSwordImage)
+            Destroy(gameManager.swordEquip.transform.GetChild(2).gameObject); 
         if (gameManager.shieldEquip.transform.childCount == 2 && savedData.isShieldImage)
             Instantiate<GameObject>(shieldImagePrefab, gameManager.shieldEquip.transform);
+        else if (gameManager.shieldEquip.transform.childCount == 3 && !savedData.isShieldImage)
+            Destroy(gameManager.shieldEquip.transform.GetChild(2).gameObject);
         if (gameManager.neckEquip.transform.childCount == 2 && savedData.isNeckImage)
             Instantiate<GameObject>(neckImagePrefab, gameManager.neckEquip.transform);
+        else if (gameManager.neckEquip.transform.childCount == 3 && !savedData.isNeckImage)
+            Destroy(gameManager.neckEquip.transform.GetChild(2).gameObject);
         if (gameManager.shoulderEquip.transform.childCount == 2 && savedData.isShoulderImage)
             Instantiate<GameObject>(shoulderImagePrefab, gameManager.shoulderEquip.transform);
+        else if (gameManager.shoulderEquip.transform.childCount == 3 && !savedData.isShoulderImage)
+            Destroy(gameManager.shoulderEquip.transform.GetChild(2).gameObject);
         if (gameManager.tassetEquip.transform.childCount == 2 && savedData.isTassetImage)
             Instantiate<GameObject>(tassetImagePrefab, gameManager.tassetEquip.transform);
+        else if (gameManager.tassetEquip.transform.childCount == 3 && !savedData.isTassetImage)
+            Destroy(gameManager.tassetEquip.transform.GetChild(2).gameObject);
         if (gameManager.bootsEquip.transform.childCount == 2 && savedData.isBootsImage)
             Instantiate<GameObject>(bootsImagePrefab, gameManager.bootsEquip.transform);
+        else if (gameManager.bootsEquip.transform.childCount == 3 && !savedData.isBootsImage)
+            Destroy(gameManager.bootsEquip.transform.GetChild(2).gameObject);
 
         // 슬롯 hierachy 이름순 정렬
         SortInventroy();

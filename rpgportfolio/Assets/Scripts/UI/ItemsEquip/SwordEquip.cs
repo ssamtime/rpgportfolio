@@ -68,9 +68,9 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
                 gameManager.attackPower -= 30;
                 // 장비창에 아이템 이미지 삭제
-                if (instanceImage)
+                if (gameManager.swordEquip.transform.GetChild(2).gameObject)
                 {
-                    Destroy(instanceImage);
+                    Destroy(gameManager.swordEquip.transform.GetChild(2).gameObject);
                 }
             }
             else
