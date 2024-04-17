@@ -39,7 +39,8 @@ public class ClickSceneMove : MonoBehaviour, IPointerClickHandler
             gameManager.canScreenRotate = true;
 
             if (placeNum==1)
-                SceneManager.LoadScene("Dungeon1");
+                //SceneManager.LoadScene("Dungeon1");
+                SceneLoader.Instance.LoadScene("Dungeon1");
             else if(placeNum==2)
                 SceneManager.LoadScene("Dungeon2");
 

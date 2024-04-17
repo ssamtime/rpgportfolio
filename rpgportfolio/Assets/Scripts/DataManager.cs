@@ -133,6 +133,7 @@ public class DataManager : MonoBehaviour
 
     void AssignToDataManager()
     {
+        // 스탯저장
         savedData.haveMoney = gameManager.haveMoney;
         savedData.playerHP = gameManager.playerHP;
         savedData.playerMaxHP = gameManager.playerMaxHP;
@@ -145,26 +146,21 @@ public class DataManager : MonoBehaviour
         savedData.attackPower = gameManager.attackPower;
         savedData.armorPower = gameManager.armorPower;
 
+        // 장비착용 여부저장
         savedData.isEquippedShield = playermoveScript.equippedShield.activeSelf;
+        savedData.isShieldImage = playermoveScript.equippedShield.activeSelf;
         savedData.isEquippedSword = playermoveScript.equippedSword.activeSelf;
+        savedData.isSwordImage = playermoveScript.equippedSword.activeSelf;
         savedData.isEquippedNeck = playermoveScript.equippedNeck.activeSelf;
+        savedData.isNeckImage = playermoveScript.equippedNeck.activeSelf;
         savedData.isEquippedShoulder = playermoveScript.equippedShoulder.activeSelf;
+        savedData.isShoulderImage = playermoveScript.equippedShoulder.activeSelf;
         savedData.isEquippedTasset = playermoveScript.equippedTasset.activeSelf;
+        savedData.isTassetImage = playermoveScript.equippedTasset.activeSelf;
         savedData.isEquippedBoots = playermoveScript.equippedBoots.activeSelf;
+        savedData.isBootsImage = playermoveScript.equippedBoots.activeSelf;
 
-        if (gameManager.swordEquip.transform.childCount == 3)
-            savedData.isSwordImage = true;
-        if (gameManager.shieldEquip.transform.childCount == 3)
-            savedData.isShieldImage = true;
-        if (gameManager.tassetEquip.transform.childCount == 3)
-            savedData.isTassetImage = true;
-        if (gameManager.bootsEquip.transform.childCount == 3)
-            savedData.isBootsImage = true;
-        if (gameManager.neckEquip.transform.childCount == 3)
-            savedData.isNeckImage = true;
-        if (gameManager.shoulderEquip.transform.childCount == 3)
-            savedData.isShoulderImage = true;
-
+        // 인벤토리 저장
         for(int i=0; i<15; i++)
         {
             if (inventorySlots.transform.GetChild(i).childCount == 2)
@@ -181,7 +177,8 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        for(int i=0; i<4; i++)
+        // 퀵슬롯 저장
+        for (int i=0; i<4; i++)
         {
             if(quickSlots.transform.GetChild(i).childCount ==2)
             {

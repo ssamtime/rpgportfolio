@@ -52,7 +52,10 @@ public class ShieldEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                 if (gameManager.shieldEquip.transform.GetChild(2).gameObject)
                 {
                     Destroy(gameManager.shieldEquip.transform.GetChild(2).gameObject);
-
+                    if (gameManager.shieldEquip.transform.childCount >= 4)
+                    {
+                        Destroy(gameManager.shieldEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else

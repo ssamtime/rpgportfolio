@@ -52,7 +52,10 @@ public class TassetEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
                 if (gameManager.tassetEquip.transform.GetChild(2).gameObject)
                 {
                     Destroy(gameManager.tassetEquip.transform.GetChild(2).gameObject);
-
+                    if (gameManager.tassetEquip.transform.childCount >= 4)
+                    {
+                        Destroy(gameManager.tassetEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else

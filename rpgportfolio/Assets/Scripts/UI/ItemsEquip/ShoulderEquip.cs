@@ -52,7 +52,10 @@ public class ShoulderEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterH
                 if (gameManager.shoulderEquip.transform.GetChild(2).gameObject)
                 {
                     Destroy(gameManager.shoulderEquip.transform.GetChild(2).gameObject);
-
+                    if (gameManager.shoulderEquip.transform.childCount >= 4)
+                    {
+                        Destroy(gameManager.shoulderEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else

@@ -71,6 +71,10 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 if (gameManager.swordEquip.transform.GetChild(2).gameObject)
                 {
                     Destroy(gameManager.swordEquip.transform.GetChild(2).gameObject);
+                    if (gameManager.swordEquip.transform.childCount >=4)
+                    {
+                        Destroy(gameManager.swordEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else

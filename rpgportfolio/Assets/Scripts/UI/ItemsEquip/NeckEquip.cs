@@ -52,6 +52,10 @@ public class NeckEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
                 if (gameManager.neckEquip.transform.GetChild(2))
                 {
                     Destroy(gameManager.neckEquip.transform.GetChild(2).gameObject);
+                    if (gameManager.neckEquip.transform.childCount >= 4)
+                    {
+                        Destroy(gameManager.neckEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else

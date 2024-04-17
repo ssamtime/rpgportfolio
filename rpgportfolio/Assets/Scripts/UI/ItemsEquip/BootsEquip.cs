@@ -53,9 +53,13 @@ public class BootsEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 boots.SetActive(false);
                 gameManager.armorPower -= 5;
                 // 장비창 이미지 삭제
-                if (gameManager.bootsEquip.transform.GetChild(2))
+                if (gameManager.bootsEquip.transform.GetChild(2)!=null)
                 {
                     Destroy(gameManager.bootsEquip.transform.GetChild(2).gameObject);
+                    if (gameManager.bootsEquip.transform.childCount >= 4)
+                    {
+                        Destroy(gameManager.bootsEquip.transform.GetChild(3).gameObject);
+                    }
                 }
             }
             else
