@@ -109,6 +109,12 @@ public class DataManager : MonoBehaviour
 
         savedData.quickSlotNumber = new int[4];
         savedData.quickSlotItemName = new string[4];
+
+        // 로비씬에서 이어하기를 눌렀을경우 실행
+        if(GlobalClassIsContinue.isContinue == true)
+        {
+            LoadData();
+        }
     }
 
     public void SaveData()

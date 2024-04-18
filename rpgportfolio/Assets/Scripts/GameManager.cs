@@ -108,7 +108,8 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        haveMoneyText.text=haveMoney.ToString();
+        if(haveMoneyText!=null)
+            haveMoneyText.text=haveMoney.ToString();
     }
 
 }
