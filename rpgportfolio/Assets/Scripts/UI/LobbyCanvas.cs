@@ -30,7 +30,7 @@ public class LobbyCanvas : MonoBehaviour
         SceneLoader.Instance.LoadScene("StartScene");
     }
 
-    public void ActiveSoundOptionWindow()
+    public void ActiveOptionWindow()
     {
         optionWindow.gameObject.SetActive(true);
         optionWindow.transform.SetAsLastSibling();

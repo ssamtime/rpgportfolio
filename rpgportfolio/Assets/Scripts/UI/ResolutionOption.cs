@@ -29,7 +29,7 @@ public class ResolutionOption : MonoBehaviour
         foreach(Resolution item in resolutions)
         {
             Dropdown.OptionData option = new Dropdown.OptionData();
-            option.text = item.width + "x" + item.height + " " + item.refreshRateRatio + "hz";
+            option.text = item.width + "x" + item.height + " " ;
             resolutionDropdown.options.Add(option);
 
             if (item.width == Screen.width && item.height == Screen.height)

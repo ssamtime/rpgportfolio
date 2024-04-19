@@ -113,7 +113,8 @@ public class DataManager : MonoBehaviour
         // 로비씬에서 이어하기를 눌렀을경우 실행
         if(GlobalClassIsContinue.isContinue == true)
         {
-            LoadData();
+            Invoke("LoadData", 0.05f);
+            //LoadData();
         }
     }
 
@@ -181,6 +182,11 @@ public class DataManager : MonoBehaviour
                     savedData.inventoryUseItemPotionType[i] =
                         inventorySlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype;
                 }
+            }
+
+            if(savedData.inventoryUseItemAmount[i]>=1)
+            {
+                savedData.inventoryUseItemAmount[i] = gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]];
             }
         }
         // 퀵슬롯 저장
