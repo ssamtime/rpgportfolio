@@ -230,46 +230,56 @@ public class DataManager : MonoBehaviour
         playermoveScript.equippedTasset.SetActive(savedData.isEquippedTasset);
         playermoveScript.equippedBoots.SetActive(savedData.isEquippedBoots);
 
+        // 장비창에 아이템 생성하기전 장비창에 있는 아이템 삭제
+        if (gameManager.swordEquip.transform.childCount >= 3)
+            Destroy(gameManager.swordEquip.transform.GetChild(2).gameObject);
+        if (gameManager.shieldEquip.transform.childCount >= 3)
+            Destroy(gameManager.shieldEquip.transform.GetChild(2).gameObject);
+        if (gameManager.neckEquip.transform.childCount >= 3)
+            Destroy(gameManager.neckEquip.transform.GetChild(2).gameObject);
+        if (gameManager.shoulderEquip.transform.childCount >= 3)
+            Destroy(gameManager.shoulderEquip.transform.GetChild(2).gameObject);
+        if (gameManager.tassetEquip.transform.childCount >= 3)
+            Destroy(gameManager.tassetEquip.transform.GetChild(2).gameObject);
+        if (gameManager.bootsEquip.transform.childCount >= 3)
+            Destroy(gameManager.bootsEquip.transform.GetChild(2).gameObject);
+
+        // 장비 불러오기
+
         // 장비 착용안하고 저장데이터가 착용했었더라면 생성
-        if (gameManager.swordEquip.transform.childCount == 2 && savedData.isSwordImage)
+        if (savedData.isSwordImage)
         {
             Instantiate<GameObject>(swordImagePrefab, gameManager.swordEquip.transform);
             playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
         }
-        // 장비 착용했고 저장데이터가 착용안했더라면 삭제
-        else if(gameManager.swordEquip.transform.childCount == 3 && !savedData.isSwordImage)
-            Destroy(gameManager.swordEquip.transform.GetChild(2).gameObject); 
-        if (gameManager.shieldEquip.transform.childCount == 2 && savedData.isShieldImage)
+        if (savedData.isShieldImage)
             Instantiate<GameObject>(shieldImagePrefab, gameManager.shieldEquip.transform);
-        else if (gameManager.shieldEquip.transform.childCount == 3 && !savedData.isShieldImage)
-            Destroy(gameManager.shieldEquip.transform.GetChild(2).gameObject);
-        if (gameManager.neckEquip.transform.childCount == 2 && savedData.isNeckImage)
+        if (savedData.isNeckImage)
             Instantiate<GameObject>(neckImagePrefab, gameManager.neckEquip.transform);
-        else if (gameManager.neckEquip.transform.childCount == 3 && !savedData.isNeckImage)
-            Destroy(gameManager.neckEquip.transform.GetChild(2).gameObject);
-        if (gameManager.shoulderEquip.transform.childCount == 2 && savedData.isShoulderImage)
+        if (savedData.isShoulderImage)
             Instantiate<GameObject>(shoulderImagePrefab, gameManager.shoulderEquip.transform);
-        else if (gameManager.shoulderEquip.transform.childCount == 3 && !savedData.isShoulderImage)
-            Destroy(gameManager.shoulderEquip.transform.GetChild(2).gameObject);
-        if (gameManager.tassetEquip.transform.childCount == 2 && savedData.isTassetImage)
+        if (savedData.isTassetImage)
             Instantiate<GameObject>(tassetImagePrefab, gameManager.tassetEquip.transform);
-        else if (gameManager.tassetEquip.transform.childCount == 3 && !savedData.isTassetImage)
-            Destroy(gameManager.tassetEquip.transform.GetChild(2).gameObject);
-        if (gameManager.bootsEquip.transform.childCount == 2 && savedData.isBootsImage)
+        if (savedData.isBootsImage)
             Instantiate<GameObject>(bootsImagePrefab, gameManager.bootsEquip.transform);
-        else if (gameManager.bootsEquip.transform.childCount == 3 && !savedData.isBootsImage)
-            Destroy(gameManager.bootsEquip.transform.GetChild(2).gameObject);
 
         // 슬롯 hierachy 이름순 정렬
         SortInventroy();
         SortQuickSlot();
 
         // 슬롯에 아이템 생성하기전 슬롯에 있는 아이템 삭제
-        for(int i=0; i<15;i++)
+        for (int i=0; i<15;i++)
         {
             if (inventorySlots.transform.GetChild(i).childCount == 2)
                 Destroy(inventorySlots.transform.GetChild(i).GetChild(1).gameObject);
         }
+
+        // 저장된 사용아이템 갯수 업데이트
+        for (int i = 0; i < 15; i++)
+        {
+            gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]] = savedData.inventoryUseItemAmount[i];
+        }
+
         // 인벤토리에 아이템 생성
         for (int i = 0; i < 15; i++)
         {            
@@ -293,18 +303,17 @@ public class DataManager : MonoBehaviour
                     Instantiate<GameObject>(bluePotionImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_Elixir(Clone)")
                     Instantiate<GameObject>(elixirImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
-                
             }
         }
 
-        // 슬롯에 아이템 생성하기전 슬롯에 있는 아이템 삭제
+        // 퀵슬롯에 아이템 생성하기전 슬롯에 있는 아이템 삭제
         for (int i = 0; i < 4; i++)
         {
             if (quickSlots.transform.GetChild(i).childCount == 2)
                 Destroy(quickSlots.transform.GetChild(i).GetChild(1).gameObject);
         }
         // 퀵슬롯에 아이템 생성
-        for (int i=0; i<4;i++)
+        for (int i = 0; i < 4; i++)
         {
             if (savedData.quickSlotItemName[i] != "")
             {
@@ -328,6 +337,12 @@ public class DataManager : MonoBehaviour
                     Instantiate<GameObject>(fireBallSkillPrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
                 else if (savedData.quickSlotItemName[i] == "IceRangeSkill(Clone)")
                     Instantiate<GameObject>(iceRangeSkillPrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
+                else if (savedData.inventoryItemName[i] == "Image_RedPotion(Clone)")
+                    Instantiate<GameObject>(redPotionImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                else if (savedData.inventoryItemName[i] == "Image_BluePotion(Clone)")
+                    Instantiate<GameObject>(bluePotionImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                else if (savedData.inventoryItemName[i] == "Image_Elixir(Clone)")
+                    Instantiate<GameObject>(elixirImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.quickSlotItemName[i] == "Image_RedPotion(Clone)(Clone)")
                     Instantiate<GameObject>(redPotionImagePrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
                 else if (savedData.quickSlotItemName[i] == "Image_BluePotion(Clone)(Clone)")
@@ -337,14 +352,13 @@ public class DataManager : MonoBehaviour
 
             }
         }
-        for(int i =0;i<15;i++)
-        {
-            gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]] = savedData.inventoryUseItemAmount[i];
-        }
+
+        // 사용아이템 갯수는 update함수로 연동되있어서 퀵슬롯은 안불러와도 됨
         //for (int i = 0; i < 4; i++)
         //{
         //    gameManager.useItemAmountArray[savedData.quickSlotUseItemPotionType[i]] = savedData.quickSlotUseItemAmount[i];
-        //}
+        //}         
+
     }
 
     void SortInventroy()

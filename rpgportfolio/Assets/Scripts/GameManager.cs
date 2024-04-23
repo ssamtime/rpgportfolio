@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public Text haveMoneyText;
 
+    // ¿Â∫Ò√¢
     public Image swordEquip;
     public Image shieldEquip;
     public Image tassetEquip;
