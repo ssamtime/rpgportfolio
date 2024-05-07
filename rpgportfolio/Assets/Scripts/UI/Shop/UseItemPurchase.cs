@@ -32,15 +32,17 @@ public class UseItemPurchase : MonoBehaviour, IPointerClickHandler
     {
         if ((Time.time - doubleClickedTime) < interval)
         {
+            // 더블클릭 했을때 실행되는 부분
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
-            //Debug.Log("더블클릭댐");
-
+                        
+            // 사려는 아이템의 정보 받기
             gameManager.itemPrice = price;
             gameManager.itemNameText = itemName;
             gameManager.instantiateImageAtInven = imageToInventory;
             gameManager.useItemIndex = useItemIndex;
 
+            // 구매 확인창 띄우기
             useItemConfirmWindow.gameObject.SetActive(true);
             useItemConfirmWindow.transform.parent.SetAsLastSibling();
         }
@@ -49,7 +51,6 @@ public class UseItemPurchase : MonoBehaviour, IPointerClickHandler
             isDoubleClicked = false;
             doubleClickedTime = Time.time;
         }
-
     }
 
 }

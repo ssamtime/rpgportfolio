@@ -22,14 +22,13 @@ public class QuickSlotInfo : MonoBehaviour, IDropHandler
         {
             if(gameManager.wasQuickSlot == false)
             {
-                print("1실행");
-                //퀵슬롯에 등록하는 부분
-
-                // 드래그한 위치(이 스크립트를 가진 슬롯)에 아이콘 생성
-                // 먼가 고쳐야 프리팹으로?
+                // 퀵슬롯에 등록
+                // 이 스크립트를 가진 슬롯에 아이콘 생성
                 GameObject copyIcon = Instantiate<GameObject>(gameManager.beginDraggedIcon, transform);
                 copyIcon.transform.position = transform.position;
-                copyIcon.GetComponent<SlotNumber>().slotNumber = copyIcon.transform.parent.GetComponent<QuickSlotInfo>().slotNumber;
+                // 인벤토리 저장할때 쓰임
+                copyIcon.GetComponent<SlotNumber>().slotNumber = 
+                    copyIcon.transform.parent.GetComponent<QuickSlotInfo>().slotNumber;
                 copyIcon.GetComponent<CanvasGroup>().blocksRaycasts = true;
                 // 드래그한 아이콘 원래위치로 이동
                 gameManager.beginDraggedIcon.transform.position = gameManager.startPosition;
@@ -37,7 +36,6 @@ public class QuickSlotInfo : MonoBehaviour, IDropHandler
             }
             else
             {
-                print("2실행");
                 // 드래그한 아이콘을 스크립트가진 곳으로 이동
                 gameManager.beginDraggedIcon.transform.SetParent(transform);
                 gameManager.beginDraggedIcon.transform.position = transform.position;
@@ -50,7 +48,6 @@ public class QuickSlotInfo : MonoBehaviour, IDropHandler
         {
             if (gameManager.wasQuickSlot == false)
             {
-                print("3실행");
                 // 드래그한 아이콘 생성
                 GameObject copyIcon = Instantiate<GameObject>(gameManager.beginDraggedIcon, transform);
                 copyIcon.transform.position = transform.position;
@@ -66,7 +63,6 @@ public class QuickSlotInfo : MonoBehaviour, IDropHandler
             else
             {
                 // 자리 바꾸기
-                print("4실행");
                 // 원래 있던 이미지를 드래그 시작위치로
                 OriginIcon.transform.parent = gameManager.startParent;
                 OriginIcon.transform.position = gameManager.startPosition;

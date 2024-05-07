@@ -19,28 +19,26 @@ public class DragAndDrop : MonoBehaviour ,IBeginDragHandler, IDragHandler , IEnd
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // 퀵슬롯에 있던 이미지인지 검사
         if (gameObject.transform.parent.GetComponent<QuickSlotInfo>() != null)
             gameManager.wasQuickSlot = true;
 
         gameManager.beginDraggedIcon = gameObject;
-
         gameManager.startPosition = transform.position;
         gameManager.startParent = transform.parent;
 
-        GetComponent<CanvasGroup>().blocksRaycasts = false;        
-
+        // 드래그하고 있는 이미지의 뒤의 정보를 가져오기 위해
+        GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
-
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = Input.mousePosition;
 
-        // 드래그한 이미지 맨위로 보이도록
+        // 드래그한 이미지가 맨위로 보이도록
         transform.SetAsLastSibling();
         transform.parent.SetAsLastSibling();
         transform.parent.parent.SetAsLastSibling();
         transform.parent.parent.parent.SetAsLastSibling();
-
     }
 
     public void OnEndDrag(PointerEventData eventData)

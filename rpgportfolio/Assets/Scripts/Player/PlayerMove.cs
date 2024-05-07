@@ -93,7 +93,15 @@ public class PlayerMove : MonoBehaviour
     {
         if(isDead) return;
 
-        CheckGround();
+        // 발밑에 땅이 있는지 확인
+        RaycastHit hit;
+
+        // 발밑으로 구를 던저서 안에 Ground 레이어마스크 있는지
+        if (Physics.SphereCast(transform.position + (Vector3.up * 0.2f), 0.15f,
+            Vector3.down, out hit, 0.1f, layer))
+        {
+            isGround = true;
+        }
         if (Input.GetButtonDown("Jump") && isGround && !isJump &&inputAllow) 
         {
             Vector3 jumpPower = Vector3.up * jumpHeight;
@@ -183,18 +191,18 @@ public class PlayerMove : MonoBehaviour
     {
         if (isDead) return;
 
-        finalSpeed = (run) ? runSpeed : walkspeed;  // run이 true일 때는 runSpeed, false일 때는 speed
-
-        Vector3 cameraForward = _camera.transform.forward; // 카메라의 전방 벡터를 플레이어의 forward로 사용
-        cameraForward.y = 0f; // y 방향은 회전할 필요가 없으므로 0으로 설정
-        cameraForward.Normalize(); // 벡터를 정규화하여 길이를 1로 만듦
-
+        // wasd로 입력받기
         if(inputAllow)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
         }
-        Vector3 rightVec = Quaternion.Euler(new Vector3(0, 90, 0)) * cameraForward; // 전방 벡터를 기준으로 오른쪽 벡터
+        // 메인카메라의 전방 벡터를 플레이어의 forward로 사용
+        Vector3 cameraForward = _camera.transform.forward;
+        cameraForward.Normalize(); // 벡터를 정규화하여 길이를 1로 만듦
+
+        // 전방 벡터를 기준으로 오른쪽 벡터
+        Vector3 rightVec = Quaternion.Euler(new Vector3(0, 90, 0)) * cameraForward; 
         moveDirection = cameraForward * verticalInput + rightVec * horizontalInput;
 
         if (moveDirection != Vector3.zero)
@@ -205,31 +213,30 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, targetAngle, 0);
         }
 
-        _rigidbody.MovePosition(_rigidbody.position + moveDirection.normalized * finalSpeed * Time.deltaTime);
-                
+        // 캐릭터를 방향대로 이동시킴
+        _rigidbody.MovePosition(_rigidbody.position +
+            moveDirection.normalized * finalSpeed * Time.deltaTime);
+
+
+        // run이 true일 때는 runSpeed, false일 때는 walkspeed
+        finalSpeed = (run) ? runSpeed : walkspeed;
+
         // 속도에 따라 애니메이션 블렌드
         float percent = ((run) ? 1 : 0.5f) * moveDirection.magnitude;
         _animator.SetFloat("Blend", percent, 0.1f, Time.deltaTime);
-
     }
 
-    void CheckGround()
-    {
-        RaycastHit hit;
+    //void CheckGround()
+    //{
+    //    RaycastHit hit;
 
-        //if (Physics.Raycast(transform.position + (Vector3.up *0.2f),
-        //    Vector3.down,out hit,0.21f,layer))
-
-        // 발밑으로 구를 던저서 안에 Ground 레이어마스크 있는지
-        if (Physics.SphereCast(transform.position + (Vector3.up * 0.2f), 0.15f,
-            Vector3.down, out hit, 0.1f, layer))
-        {
-            isGround = true;
-        }
-        else
-        {
-        }
-    }
+    //    // 발밑으로 구를 던저서 안에 Ground 레이어마스크 있는지
+    //    if (Physics.SphereCast(transform.position + (Vector3.up * 0.2f), 0.15f,
+    //        Vector3.down, out hit, 0.1f, layer))
+    //    {
+    //        isGround = true;
+    //    }
+    //}
 
     public void InstantiateFireBall()
     {
@@ -261,7 +268,11 @@ public class PlayerMove : MonoBehaviour
             gameManager.playerHP -= attackPower;
         }
         print(gameManager.playerHP);
-        audioSource.PlayOneShot(playerDamagedAC);
+        //audioSource.PlayOneShot(playerDamagedAC);
+        if (audioSource.isPlaying)
+            return;
+        else
+            audioSource.PlayOneShot(playerDamagedAC);
 
         if (gameManager.playerHP <= 0)
         {

@@ -61,6 +61,8 @@ purchase window 이거도 gamemanager로
 아이템버리기
 
 
+어려웠던점
+
 //마지막 몬스터 죽이면 포탈 setacive true 마을로
 //몬스터 죽으면 돈이나 물약드랍
 //플레이어 죽으면 마을로 다시시작

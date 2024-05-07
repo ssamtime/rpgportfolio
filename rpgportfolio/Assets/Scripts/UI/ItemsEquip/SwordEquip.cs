@@ -50,21 +50,12 @@ public class SwordEquip : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             isDoubleClicked = true;
             doubleClickedTime = -1.0f;
 
-            //if(purchaseWindow.gameObject.activeSelf)
-            //{
-            //    gameManager.sellItemNameString = sellItemName;
-
-            //    sellConfirmWindow.gameObject.SetActive(false);
-            //}
-            //else
-            //{
-
-            //}
-
             // 더블클릭시 아이템 장비or해제
             if (sword.activeSelf)
             {
+                // 캐릭터 장비 해제
                 sword.SetActive(false);
+                // 검 들고 있는 애니메이션 -> 맨손
                 playermoveScript._animator.runtimeAnimatorController = playermoveScript.originalOverrideAnimator;
                 gameManager.attackPower -= 30;
                 // 장비창에 아이템 이미지 삭제

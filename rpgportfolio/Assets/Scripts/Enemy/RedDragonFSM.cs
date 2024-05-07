@@ -88,8 +88,8 @@ public class RedDragonFSM : MonoBehaviour
         attackPower = 40;
         attackRange = 4.5f;       //¿ÀÅ©¶û´Ù¸§
 
-        hp = 200;
-        maxHp = 200;
+        hp = 250;
+        maxHp = 250;
         playerHP = gameManager.playerHP;
 
         waypointIndex = 0;
@@ -244,7 +244,6 @@ public class RedDragonFSM : MonoBehaviour
                 currentTime = 0;
                 isAttack = true;
 
-
                 if (hasBasicAttacked == false)
                 {
                     _animator.SetBool("Idle", true);
@@ -260,9 +259,7 @@ public class RedDragonFSM : MonoBehaviour
                     _animator.SetBool("Walk", false);
                     _animator.SetBool("Fire", true);
                     hasBasicAttacked = false;
-                }
-                    
-
+                }                 
             }
         }
         else if (isAttack)  // attack finish¿¡¼­ falseµÊ

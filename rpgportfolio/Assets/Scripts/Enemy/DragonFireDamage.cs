@@ -34,8 +34,7 @@ public class DragonFireDamage : MonoBehaviour
             elapsedTime += Time.deltaTime;
             if (elapsedTime > attackDelay)
             {
-                elapsedTime = 0;
-
+                elapsedTime = 0;                
                 if (playerMoveScript != null)
                 {
                     if (attackPower - gameManager.armorPower >= 1)

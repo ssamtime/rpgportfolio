@@ -45,8 +45,8 @@ public class SavedData
 
     public int[] quickSlotNumber = new int[4];
     public string[] quickSlotItemName = new string[4];
-    //public int[] quickSlotUseItemAmount = new int[4];
-    //public int[] quickSlotUseItemPotionType = new int[4];
+    public int[] quickSlotUseItemAmount = new int[4];
+    public int[] quickSlotUseItemPotionType = new int[4];
 
 
 }
@@ -114,7 +114,6 @@ public class DataManager : MonoBehaviour
         if(GlobalClassIsContinue.isContinue == true)
         {
             Invoke("LoadData", 0.05f);
-            //LoadData();
         }
     }
 
@@ -140,7 +139,7 @@ public class DataManager : MonoBehaviour
 
     void AssignToDataManager()
     {
-        // 스탯저장
+        // 캐릭터 정보 저장
         savedData.haveMoney = gameManager.haveMoney;
         savedData.playerHP = gameManager.playerHP;
         savedData.playerMaxHP = gameManager.playerMaxHP;
@@ -172,21 +171,18 @@ public class DataManager : MonoBehaviour
         {
             if (inventorySlots.transform.GetChild(i).childCount == 2)
             {
+                // 아이템의 이름과 위치한 슬롯의 번호 저장
                 savedData.inventorySlotNumber[i] = inventorySlots.transform.GetChild(i).GetChild(1).
                     GetComponent<SlotNumber>().slotNumber;
                 savedData.inventoryItemName[i] = inventorySlots.transform.GetChild(i).GetChild(1).name;
                 if (inventorySlots.transform.GetChild(i).GetChild(1).childCount == 2)
                 {
+                    // 사용아이템의 종류와 갯수 저장
                     savedData.inventoryUseItemAmount[i] = gameManager.useItemAmountArray[
                         inventorySlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype];
                     savedData.inventoryUseItemPotionType[i] =
                         inventorySlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype;
                 }
-            }
-
-            if(savedData.inventoryUseItemAmount[i]>=1)
-            {
-                savedData.inventoryUseItemAmount[i] = gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]];
             }
         }
         // 퀵슬롯 저장
@@ -197,20 +193,24 @@ public class DataManager : MonoBehaviour
                 savedData.quickSlotNumber[i] = quickSlots.transform.GetChild(i).GetChild(1).
                     GetComponent<SlotNumber>().slotNumber;
                 savedData.quickSlotItemName[i] = quickSlots.transform.GetChild(i).GetChild(1).name;
-                //if (quickSlots.transform.GetChild(i).GetChild(1).childCount == 2)
-                //{
-                //    savedData.quickSlotNumber[i] = gameManager.useItemAmountArray[
-                //        quickSlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype];
-                //    savedData.quickSlotUseItemPotionType[i] =
-                //        quickSlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype;
-                //}
+
+                if (quickSlots.transform.GetChild(i).GetChild(1).childCount == 2)
+                {
+                    // 사용아이템의 종류와 갯수 저장
+                    savedData.quickSlotUseItemAmount[i] = gameManager.useItemAmountArray[
+                        quickSlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype];
+                    savedData.quickSlotUseItemPotionType[i] =
+                        quickSlots.transform.GetChild(i).GetChild(1).GetComponent<PotionUse>().potiontype;
+                }
             }
+            
         }
 
     }
 
     void AssignFromDataManager()
     {
+        // 플레이어 정보 불러오기
         gameManager.haveMoney = savedData.haveMoney;
         gameManager.playerHP = savedData.playerHP;
         gameManager.playerMaxHP = savedData.playerMaxHP;
@@ -222,7 +222,7 @@ public class DataManager : MonoBehaviour
         gameManager.canStatUpClick = savedData.canStatUpClick;
         gameManager.attackPower = savedData.attackPower;
         gameManager.armorPower = savedData.armorPower;
-
+        // 착용 장비 불러오기
         playermoveScript.equippedShield.SetActive(savedData.isEquippedShield);
         playermoveScript.equippedSword.SetActive(savedData.isEquippedSword);
         playermoveScript.equippedNeck.SetActive(savedData.isEquippedNeck);
@@ -244,13 +244,12 @@ public class DataManager : MonoBehaviour
         if (gameManager.bootsEquip.transform.childCount >= 3)
             Destroy(gameManager.bootsEquip.transform.GetChild(2).gameObject);
 
-        // 장비 불러오기
-
-        // 장비 착용안하고 저장데이터가 착용했었더라면 생성
+        // 장비창 불러오기
         if (savedData.isSwordImage)
         {
             Instantiate<GameObject>(swordImagePrefab, gameManager.swordEquip.transform);
-            playermoveScript._animator.runtimeAnimatorController = playermoveScript.swordOverrideAnimator;
+            playermoveScript._animator.runtimeAnimatorController = 
+                playermoveScript.swordOverrideAnimator;
         }
         if (savedData.isShieldImage)
             Instantiate<GameObject>(shieldImagePrefab, gameManager.shieldEquip.transform);
@@ -273,20 +272,20 @@ public class DataManager : MonoBehaviour
             if (inventorySlots.transform.GetChild(i).childCount == 2)
                 Destroy(inventorySlots.transform.GetChild(i).GetChild(1).gameObject);
         }
-
         // 저장된 사용아이템 갯수 업데이트
         for (int i = 0; i < 15; i++)
         {
-            gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]] = savedData.inventoryUseItemAmount[i];
+            gameManager.useItemAmountArray[savedData.inventoryUseItemPotionType[i]] = 
+                savedData.inventoryUseItemAmount[i];
         }
-
         // 인벤토리에 아이템 생성
         for (int i = 0; i < 15; i++)
         {            
             if (savedData.inventoryItemName[i] !="")
             {
                 if (savedData.inventoryItemName[i] == "Image_Boots(Clone)")
-                    Instantiate<GameObject>(bootsImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                    Instantiate<GameObject>(bootsImagePrefab,
+                        inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_Neck(Clone)")
                     Instantiate<GameObject>(neckImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_Shield 1(Clone)")
@@ -312,6 +311,11 @@ public class DataManager : MonoBehaviour
             if (quickSlots.transform.GetChild(i).childCount == 2)
                 Destroy(quickSlots.transform.GetChild(i).GetChild(1).gameObject);
         }
+        // 필요없음 update로 연동됨
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    gameManager.useItemAmountArray[savedData.quickSlotUseItemPotionType[i]] = savedData.quickSlotUseItemAmount[i];
+        //}
         // 퀵슬롯에 아이템 생성
         for (int i = 0; i < 4; i++)
         {
@@ -338,11 +342,11 @@ public class DataManager : MonoBehaviour
                 else if (savedData.quickSlotItemName[i] == "IceRangeSkill(Clone)")
                     Instantiate<GameObject>(iceRangeSkillPrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_RedPotion(Clone)")
-                    Instantiate<GameObject>(redPotionImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                    Instantiate<GameObject>(redPotionImagePrefab, quickSlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_BluePotion(Clone)")
-                    Instantiate<GameObject>(bluePotionImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                    Instantiate<GameObject>(bluePotionImagePrefab, quickSlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.inventoryItemName[i] == "Image_Elixir(Clone)")
-                    Instantiate<GameObject>(elixirImagePrefab, inventorySlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
+                    Instantiate<GameObject>(elixirImagePrefab, quickSlots.transform.GetChild(savedData.inventorySlotNumber[i]).transform);
                 else if (savedData.quickSlotItemName[i] == "Image_RedPotion(Clone)(Clone)")
                     Instantiate<GameObject>(redPotionImagePrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
                 else if (savedData.quickSlotItemName[i] == "Image_BluePotion(Clone)(Clone)")
@@ -351,13 +355,7 @@ public class DataManager : MonoBehaviour
                     Instantiate<GameObject>(elixirImagePrefab, quickSlots.transform.GetChild(savedData.quickSlotNumber[i]).transform);
 
             }
-        }
-
-        // 사용아이템 갯수는 update함수로 연동되있어서 퀵슬롯은 안불러와도 됨
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    gameManager.useItemAmountArray[savedData.quickSlotUseItemPotionType[i]] = savedData.quickSlotUseItemAmount[i];
-        //}         
+        }              
 
     }
 
@@ -365,24 +363,23 @@ public class DataManager : MonoBehaviour
     {
         // 이름순서대로 hierachy 정렬 
 
+        // 인벤토리 비활성화되어있으면 활성화
         int inventoryOffed = -1;
         if(inventorySlots.transform.parent.gameObject.activeSelf==false)
         {
             inventoryOffed = 1;
             inventorySlots.transform.parent.gameObject.SetActive(true);
         }
-            inventorySlots.transform.parent.gameObject.SetActive(true);
-        // 모든 인벤토리 슬롯을 가져옵니다.
+        // 인벤토리 슬롯을 배열에 저장하기
         Transform[] slots = new Transform[inventorySlots.transform.childCount];
         for (int i = 0; i < inventorySlots.transform.childCount; i++)
         {
             slots[i] = inventorySlots.transform.GetChild(i);
         }
 
-        // 슬롯을 정렬합니다.
+        // 이름순 정렬
         Array.Sort(slots, CompareSlotName);
-
-        // 정렬된 순서대로 슬롯의 위치를 조정합니다.
+        // 정렬된 순서대로 슬롯의 hierachy 순서를 조정
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].SetSiblingIndex(i);
@@ -395,26 +392,22 @@ public class DataManager : MonoBehaviour
 
     void SortQuickSlot()
     {
-        // 이름순서대로 hierachy 정렬 
-
-        // 모든 퀵 슬롯을 가져옵니다.
+        // 퀵 슬롯을 배열에 저장하기
         Transform[] slots = new Transform[quickSlots.transform.childCount];
         for (int i = 0; i < quickSlots.transform.childCount; i++)
         {
             slots[i] = quickSlots.transform.GetChild(i);
         }
 
-        // 슬롯을 정렬합니다.
+        // 이름순 정렬
         Array.Sort(slots, CompareSlotName);
-
-        // 정렬된 순서대로 슬롯의 위치를 조정합니다.
+        // 정렬된 순서대로 슬롯의 hierachy 순서를 조정
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].SetSiblingIndex(i);
         }
     }
-
-    // 이름을 기준으로 Transform을 비교하는 메서드
+    // 이름을 기준으로 비교
     int CompareSlotName(Transform a, Transform b)
     {
         string nameA = a.name;

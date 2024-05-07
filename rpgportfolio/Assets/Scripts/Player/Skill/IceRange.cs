@@ -17,16 +17,13 @@ public class IceRange : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-
         if (timer > 1)
         {
             timer = 0;
 
-            // 적 탐지
             RaycastHit[] hits;
             // 플레이어 위로 구 발사
             hits = Physics.SphereCastAll(transform.position, 4.3f, transform.up, 1f);
-
             foreach (RaycastHit colliderHit in hits)
             {                
                 EnemyFSM enemyFSM1 = colliderHit.collider.GetComponent<EnemyFSM>();
@@ -39,23 +36,7 @@ public class IceRange : MonoBehaviour
                     enemyFSM2.HitEnemy(IceRangeDamage);
                 else if (enemyFSM3 != null)
                     enemyFSM3.HitEnemy(IceRangeDamage);
-
-                //if (colliderHit.collider.tag == "Enemy")
-                //{
-                //    GameObject hitEffect = Instantiate<GameObject>(DamageEffectPrefab,
-                //        colliderHit.collider.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
-                //    Destroy(hitEffect, 2f);
-                //}
             }
-
         }
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.tag == "Enemy")
-    //    {
-                                       
-    //    }
-    //}
 }

@@ -79,14 +79,14 @@ public class IceRangeSkillUse : MonoBehaviour, IPointerClickHandler, IPointerEnt
             gameManager.playerMP -= 30;
             player.GetComponent<PlayerMove>().InstantiateIceRange();
 
-            darkImage.fillAmount = 1;
+            darkImage.fillAmount = 1;   //스킬 버튼을 가림
             StartCoroutine("CoolTime");
 
             cooltime_current = cooltime_max;
             leftTimeText.text = cooltime_current.ToString();
             StartCoroutine("CoolTimeCounter");
 
-            canUseSkill = false;
+            canUseSkill = false;    //스킬을 사용할 수 없는 상태로 바꿈
         }
     }
 

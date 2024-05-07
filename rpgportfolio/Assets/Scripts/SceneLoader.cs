@@ -81,8 +81,8 @@ public class SceneLoader : MonoBehaviour
             //씬 로딩이 90% 미만이라면
             if (op.progress < 0.9f)
             {
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
-                progressPercentage.text = Mathf.Round(Mathf.Lerp(float.Parse(progressPercentage.text), 100f, timer))
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, 0.5f);
+                progressPercentage.text = Mathf.Round(Mathf.Lerp(float.Parse(progressPercentage.text), 100f, 0.5f))
                     .ToString();
                 if (progressBar.fillAmount >= op.progress)
                 {
@@ -91,8 +91,8 @@ public class SceneLoader : MonoBehaviour
             }
             else
             {
-                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
-                progressPercentage.text = Mathf.Round(Mathf.Lerp(float.Parse(progressPercentage.text), 100f, timer))
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, 0.5f);
+                progressPercentage.text = Mathf.Round(Mathf.Lerp(float.Parse(progressPercentage.text), 100f, 0.5f))
                     .ToString();
 
                 if (progressBar.fillAmount == 1.0f)

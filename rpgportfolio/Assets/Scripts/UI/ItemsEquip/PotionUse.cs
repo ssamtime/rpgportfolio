@@ -72,6 +72,7 @@ public class PotionUse : MonoBehaviour, IPointerClickHandler, IPointerEnterHandl
 
     public void UsePotion()
     {
+        // 
         GameObject healingFX = Instantiate<GameObject>(healingEffectPrefab, player.transform);
         Destroy(healingFX, 2f);
         if (potiontype == 1)

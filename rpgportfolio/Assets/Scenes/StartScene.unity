@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.037161574, g: 0.04296711, b: 0.057905704, a: 1}
+  m_IndirectSpecularColor: {r: 0.037132304, g: 0.0429607, b: 0.057843044, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23584,6 +23584,8 @@ MonoBehaviour:
     - 
     - 
     - 
+    quickSlotUseItemAmount: 00000000000000000000000000000000
+    quickSlotUseItemPotionType: 00000000000000000000000000000000
   swordImagePrefab: {fileID: 7358679533781942457, guid: 89feded29f4337f418f77a9e63f84b19,
     type: 3}
   shieldImagePrefab: {fileID: 1171139265379055985, guid: c1eb618ffa22c0449928ed8a8a9a6058,
@@ -31107,19 +31109,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectTofollow: {fileID: 1764702687}
-  followspeed: 10
   sensitivity: 500
   maxClampAngle: 70
   minClampAngle: -10
   rotX: 0
   realCamera: {fileID: 963194228}
   dirNormalized: {x: 0, y: 0, z: 0}
-  finalDir: {x: 0, y: 0, z: 0}
+  finalPos: {x: 0, y: 0, z: 0}
   minDistance: 1
   maxDistance: 2
   finalDistance: 0
   smoothness: 10
-  cameraPos: {x: 0, y: 0, z: 0}
 --- !u!4 &1888164675
 Transform:
   m_ObjectHideFlags: 0
@@ -39924,6 +39924,11 @@ PrefabInstance:
       propertyPath: inventoryWindow
       value: 
       objectReference: {fileID: 1061062060}
+    - target: {fileID: 3289264037679056935, guid: 990426a872c796743afdfa0c7b104bc4,
+        type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4537066446673117863, guid: 990426a872c796743afdfa0c7b104bc4,
         type: 3}
       propertyPath: m_Name

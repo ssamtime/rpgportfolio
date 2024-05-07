@@ -32,15 +32,18 @@ public class UseItemConfirmPurchase : MonoBehaviour
         }
     }
 
-    // 확인 버튼 누르면 실행되는 함수
+    // 구매확인 버튼 누르면 실행되는 함수
     public void PurchaseUseItem()
     {
+        // 소지금이 아이템 가격보다 크면 구매가능
         if (gameManager.haveMoney >= gameManager.itemPrice)
         {
+            // 사려는 사용 아이템의 개수가 0개면
             if (gameManager.useItemAmountArray[gameManager.useItemIndex]==0)
             {
                 gameManager.useItemAmountArray[gameManager.useItemIndex] += 1;
 
+                // 아이템이 생성될 인벤토리의 빈자리 찾기
                 int i = 0;
                 while (true)
                 {
@@ -51,14 +54,12 @@ public class UseItemConfirmPurchase : MonoBehaviour
                 Instantiate<Image>(gameManager.instantiateImageAtInven,
                     Inventroyslots[i].transform);
 
+                audioSource.PlayOneShot(sellSoundAC);
+                gameManager.haveMoney -= gameManager.itemPrice;
+
                 // slotnumber 저장
                 if (gameManager.instantiateImageAtInven.GetComponent<SlotNumber>() != null)
                     gameManager.instantiateImageAtInven.GetComponent<SlotNumber>().slotNumber = i;
-                else
-                    Debug.Log("slotnumber 스크립트 못차즘..");
-
-                audioSource.PlayOneShot(sellSoundAC);
-                gameManager.haveMoney -= gameManager.itemPrice;
             }
             else if(gameManager.useItemAmountArray[gameManager.useItemIndex] > 0)
             {
@@ -67,7 +68,6 @@ public class UseItemConfirmPurchase : MonoBehaviour
                 audioSource.PlayOneShot(sellSoundAC);
                 gameManager.haveMoney -= gameManager.itemPrice;
             }
-
 
             useItemConfirmWindow.gameObject.SetActive(false);
         }

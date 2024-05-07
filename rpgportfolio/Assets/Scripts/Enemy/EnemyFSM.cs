@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyFSM : MonoBehaviour
-{
-    // 적 개체의 상태 분류
+{    
     enum EnemyState
     {
+        // 적 개체의 상태 분류
         Idle,
         Patrol,
         Move,
@@ -71,7 +71,7 @@ public class EnemyFSM : MonoBehaviour
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
 
-        findDistance = 5.0f;
+        findDistance = 8.0f;
         attackDistance = 1.5f;
         moveSpeed = 3.0f;
         moveDistance = 20.0f;
@@ -86,6 +86,7 @@ public class EnemyFSM : MonoBehaviour
         playerHP = gameManager.playerHP;
 
         waypointIndex = 0;
+        stayTime = 5f;
 
         audioSource = GetComponent<AudioSource>();
 
@@ -130,7 +131,6 @@ public class EnemyFSM : MonoBehaviour
             _animator.SetBool("Walk", false);
             return;
         }
-
         // 만약 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환한다
         if (Vector3.Distance(transform.position, playerTransform.position) < findDistance)
         {
@@ -153,8 +153,8 @@ public class EnemyFSM : MonoBehaviour
                 agent.SetDestination(patrolPath.transform.GetChild(waypointIndex).position);
             }
 
-            // 만약에 위치 도달하면 다음위치로 이동
-            if (Vector3.Distance(patrolPath.transform.GetChild(waypointIndex).position, transform.position) < 0.3f)
+            if (Vector3.Distance(patrolPath.transform.GetChild(waypointIndex).position,
+                transform.position) < 0.3f)
             {
                 _animator.SetBool("Idle", true);
                 _animator.SetBool("Attack", false);
@@ -164,8 +164,7 @@ public class EnemyFSM : MonoBehaviour
                 if(waypointIndex>=patrolPath.transform.childCount)
                     waypointIndex= 0;
             }
-        }
-        
+        }        
     }
         
     // 이동 상태
@@ -179,7 +178,7 @@ public class EnemyFSM : MonoBehaviour
         }
         agent.speed = 2f;
 
-        // 현재 위치가 초기 위치에서 이동 가능한 범위를 넘어간다면?
+        // 현재 위치가 초기 위치에서 이동 가능한 범위를 넘어간다면
         if (Vector3.Distance(transform.position, originPos) > moveDistance)
         {
             // 현재 상태를 복귀(Return)로 전환한다
@@ -189,28 +188,26 @@ public class EnemyFSM : MonoBehaviour
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", true);
         }
-        // 만약 플레이어와의 거리가 공격 범위 밖이라면 플레이어를 향해 이동한다
-        else if (Vector3.Distance(transform.position, playerTransform.position) > attackDistance)
-        {
-            
+        // 만약 플레이어와의 거리가 공격 범위 밖이라면 플레이어를 향해 이동
+        else if (Vector3.Distance(
+            transform.position, playerTransform.position) > attackDistance)
+        {            
             agent.SetDestination(player.transform.position);
             _animator.SetBool("Idle", false);
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", true);
-
             // 플레이어를 바라보도록 회전
             Vector3 direction = (player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
         }
-        // 조건을 충족하지 못했을 경우에는 공격(Attack) 상태로 전환한다
+        // 조건을 충족하지 못했을 경우에는 공격(Attack) 상태로 전환
         else
         {
             m_State = EnemyState.Attack;
             print("상태 전환 : Move -> Attack");
             agent.velocity = Vector3.zero;
-
             // 누적 시간을 공격 딜레이 시간만큼 미리 진행
             currentTime = attackDelay;
         }
@@ -225,15 +222,15 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Return;
             return;
         }
-
-        // 만약 플레이어가 공격 범위 내에 위치하는 경우 플레이어를 공격한다
+        // 만약 플레이어가 공격 범위 내에 위치하는 경우 플레이어를 공격
         if (Vector3.Distance(transform.position, playerTransform.position) <= attackDistance)
         {
             agent.velocity = Vector3.zero;
             // 플레이어를 바라보도록 회전
-            Vector3 direction = (player.transform.position - transform.position).normalized;
+            Vector3 direction = (player.transform.position- transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
             // 일정 간격마다 플레이어를 공격한다
             currentTime += Time.deltaTime;
@@ -253,7 +250,7 @@ public class EnemyFSM : MonoBehaviour
             agent.velocity = Vector3.zero;
             return;
         }
-        // 공격사거리를 벗어나면 현재 상태를 이동(Move)으로 전환한다 (재추격)
+        // 공격사거리를 벗어나면 현재 상태를 이동(Move)으로 전환 (재추격)
         else
         {
             m_State = EnemyState.Move;
@@ -268,30 +265,25 @@ public class EnemyFSM : MonoBehaviour
     // 복귀 상태
     void Return()
     {
-        // 초기 위치에서의 거리가 0.1f 이상이면 초기 위치로 이동한다
+        // 초기 위치에서의 거리가 0.1f 이상이면 초기 위치로 이동
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
-            //Vector3 dir = (originPos - transform.position).normalized;
-            //cc.Move(dir * moveSpeed * Time.deltaTime);
-
             agent.SetDestination(originPos);
             _animator.SetBool("Idle", false);
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", true);
         }
         else
-        // 그렇지 않다면 자신의 위치를 초기 위치로 조정하고 현재 상태를 대기로 전환
         {
+            // 그렇지 않다면 자신의 위치를 초기 위치로 조정하고 현재 상태를 대기로 전환
             transform.position = originPos;
-
-            // HP를 회복한다
+            // HP 회복
             hp = maxHp;
             m_State = EnemyState.Idle;
             print("상태 전환 : Return -> Idle");
             _animator.SetBool("Idle", true);
             _animator.SetBool("Attack", false);
             _animator.SetBool("Walk", false);
-
         }
     }
 
@@ -320,15 +312,12 @@ public class EnemyFSM : MonoBehaviour
     {
         // 사망 상태를 처리하기 위한 코루틴을 실행한다
         StartCoroutine(DeadProcess());
-
-        //// 진행 중인 피격 관련 코루틴을 중지한다
-        //StopAllCoroutines();
     }
 
     // 사망 상태 처리용 코루틴 함수
     IEnumerator DeadProcess()
     {        
-        // 한번만실행
+        // 한번만실행 되도록
         if (!isDeadAnim)
         {
             audioSource.PlayOneShot(orcDead);
@@ -352,14 +341,16 @@ public class EnemyFSM : MonoBehaviour
                 gameManager.playerHP = gameManager.playerMaxHP;
                 gameManager.playerMP = gameManager.playerMaxMP;
                 // 레벨업 효과 생성
-                GameObject levelUpEffect = Instantiate<GameObject>(levelUpEffectPrefab, player.transform);
+                GameObject levelUpEffect = 
+                    Instantiate<GameObject>(levelUpEffectPrefab, player.transform);
                 Destroy(levelUpEffect, 4f);
-                GameObject levelUpText = Instantiate<GameObject>(levelUpTextPrefab, player.transform);
+                GameObject levelUpText = 
+                    Instantiate<GameObject>(levelUpTextPrefab, player.transform);
                 levelUpText.transform.Translate(Vector3.up);
                 Destroy(levelUpText, 4f);
             }
             
-            // 5초 후 자기자신을 제거한다
+            // 3초 후 자기자신을 제거한다
             yield return new WaitForSeconds(3.0f);
             print("소멸!");
             Destroy(gameObject);
@@ -377,7 +368,6 @@ public class EnemyFSM : MonoBehaviour
         {
             return;
         }
-
 
         // 플레이어의 공격력만큼 적의 체력을 감소시킨다
         if (hp-hitPower < 0)
@@ -409,7 +399,6 @@ public class EnemyFSM : MonoBehaviour
     public void AttackFinish()
     {
         isAttack = false;
-        //agent.Resume();
         _animator.SetBool("Walk", false);
         _animator.SetBool("Attack", false);
         _animator.SetBool("Idle", true);

@@ -71,7 +71,7 @@ public class DarkBlueFSM : MonoBehaviour
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
 
-        findDistance = 7.0f;
+        findDistance = 5.5f;
         attackDistance = 2.2f;    //다르게해줘야
         moveSpeed = 3.0f;
         moveDistance = 20.0f;
